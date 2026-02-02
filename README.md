@@ -132,7 +132,7 @@ tiffin/
 └── README.md        # This file
 ```
 
-## Key Models
+## Key Model
 
 ### User (Custom User Model)
 - Extends Django's AbstractUser
