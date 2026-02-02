@@ -222,7 +222,7 @@ Provides providers with real-time analytics on earnings, active orders, and menu
 
 ### 4. Customer Dashboard
 Allows customers to track their "Next Delivery," view order history, and manage their favorite tiffin providers.
-![Customer Dashboard](static/customer_page.png)
+![Customer Dashboard]()
 
 ## License
 
