@@ -202,6 +202,28 @@ tiffin/
 - Implement proper SSL/HTTPS in production
 - Regular security updates
 
+## 🖼️ Visual Interface (UI/UX)
+
+Below are the design mockups for the Tiffin Service platform. You can find these assets in the `/static/images/screenshots/` directory.
+
+### 1. Home Page
+The landing page features a hero section with a search bar, categories for customers/vendors, and a "Favorite Meals" showcase.
+![Home Page](static/images/screenshots/home_page.png)
+
+### 2. Authentication (Login & Signup)
+A clean, split-screen design. The signup page includes a specific dropdown to select between **Customer** and **Vendor** roles.
+| Login Page | Signup Page |
+| :--- | :--- |
+| ![Login](tiffin/static/login_page.png) | ![Signup](static/images/screenshots/signup.png) |
+
+### 3. Vendor Dashboard
+Provides providers with real-time analytics on earnings, active orders, and menu management tools.
+![Vendor Dashboard](static/images/screenshots/vendor_dashboard.png)
+
+### 4. Customer Dashboard
+Allows customers to track their "Next Delivery," view order history, and manage their favorite tiffin providers.
+![Customer Dashboard](static/images/screenshots/customer_dashboard.png)
+
 ## License
 
 This project is licensed under the MIT License.
