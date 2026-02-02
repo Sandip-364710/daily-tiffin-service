@@ -208,7 +208,7 @@ This project is licensed under the MIT License.
 
 ## Support
 
-For support and questions, please contact [your-email@example.com]
+For support and questions, please contact [jakhaniyasandip41@gmail.com]
 
 ---
 
