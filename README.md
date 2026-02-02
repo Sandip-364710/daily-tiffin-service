@@ -208,7 +208,7 @@ Below are the design mockups for the Tiffin Service platform. You can find these
 
 ### 1. Home Page
 The landing page features a hero section with a search bar, categories for customers/vendors, and a "Favorite Meals" showcase.
-![Home Page](static/images/screenshots/home_page.png)
+![Home Page](static/customer_page.png)
 
 ### 2. Authentication (Login & Signup)
 A clean, split-screen design. The signup page includes a specific dropdown to select between **Customer** and **Vendor** roles.
