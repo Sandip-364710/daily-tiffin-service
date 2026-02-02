@@ -1,0 +1,85 @@
+# Gujarati translations for Tiffin Service
+msgid ""
+msgstr ""
+"Project-Id-Version: tiffin_service\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-25 00:00+0000\n"
+"PO-Revision-Date: 2025-09-25 00:00+0000\n"
+"Last-Translator: Auto <auto@example.com>\n"
+"Language-Team: Gujarati\n"
+"Language: gu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/base.html
+msgid "Tiffin Service"
+msgstr "ટિફિન સર્વિસ"
+
+#: templates/base.html
+msgid "Home"
+msgstr "ઘર"
+
+#: templates/base.html
+msgid "Browse Tiffins"
+msgstr "ટિફિન જુઓ"
+
+#: templates/base.html
+msgid "Cart"
+msgstr "કાર્ટ"
+
+#: templates/base.html
+msgid "Theme"
+msgstr "થીમ"
+
+#: templates/base.html
+msgid "White"
+msgstr "સફેદ"
+
+#: templates/base.html
+msgid "Blue"
+msgstr "વાદળી"
+
+#: templates/base.html
+msgid "Kesri"
+msgstr "કેસરી"
+
+#: templates/base.html
+msgid "English"
+msgstr "અંગ્રેજી"
+
+#: templates/base.html
+msgid "Gujarati"
+msgstr "ગુજરાતી"
+
+#: templates/base.html
+msgid "Hindi"
+msgstr "હિન્દી"
+
+#: templates/base.html
+msgid "Dashboard"
+msgstr "ડેશબોર્ડ"
+
+#: templates/base.html
+msgid "Order History"
+msgstr "ઓર્ડર ઇતિહાસ"
+
+#: templates/base.html
+msgid "My Tiffins"
+msgstr "મારા ટિફિન"
+
+#: templates/base.html
+msgid "Add Tiffin"
+msgstr "ટિફિન ઉમેરો"
+
+#: templates/base.html
+msgid "Logout"
+msgstr "લોગઆઉટ"
+
+#: templates/base.html
+msgid "Login"
+msgstr "લોગિન"
+
+#: templates/base.html
+msgid "Sign Up"
+msgstr "સાઇન અપ"

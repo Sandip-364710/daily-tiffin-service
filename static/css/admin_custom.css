@@ -1,0 +1,23 @@
+:root{
+  --brand:#ff6b35;
+  --brand-dark:#e55a2e;
+}
+/* Header */
+#header{ background:var(--brand); }
+#header a:link, #header a:visited{ color:#fff; }
+#user-tools a{ color:#fff; }
+/* Sidebar/module headings */
+.module caption{ background:var(--brand); color:#fff; font-weight:600; }
+/* Buttons */
+.button, input[type=submit], .submit-row input{
+  background:var(--brand); border-color:var(--brand-dark); color:#fff;
+}
+.button:hover, input[type=submit]:hover, .submit-row input:hover{
+  background:var(--brand-dark); border-color:var(--brand-dark);
+}
+/* Links */
+a:link, a:visited{ color:#0d6efd; }
+a:hover{ color:#0b5ed7; }
+/* Table zebra */
+#changelist .row1{ background:#fafafa; }
+#changelist .row2{ background:#ffffff; }

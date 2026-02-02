@@ -1,0 +1,10 @@
+from django.apps import AppConfig
+
+
+class AiFeaturesConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'ai_features'
+    
+    def ready(self):
+        # Import signals here to avoid AppRegistryNotReady exception
+        import ai_features.signals

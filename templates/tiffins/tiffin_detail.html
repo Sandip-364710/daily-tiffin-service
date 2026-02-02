@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ tiffin.name }} - Tiffin Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Tiffin Details -->
+        <div class="col-md-8">
+            <div class="card">
+                {% if tiffin.image %}
+                    <img src="{{ tiffin.image.url }}" class="card-img-top" alt="{{ tiffin.name }}" style="height: 400px; object-fit: cover;">
+                {% else %}
+                    <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 400px; background-color: #f8f9fa;">
+                        <i class="fas fa-utensils fa-5x text-muted"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h1 class="card-title">{{ tiffin.name }}</h1>
+                    <p class="card-text">{{ tiffin.description }}</p>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h5>Details</h5>
+                            <ul class="list-unstyled">
+                                <li><strong>Meal Type:</strong> {{ tiffin.get_meal_type_display }}</li>
+                                <li><strong>Serves:</strong> {{ tiffin.serves }} person(s)</li>
+                                <li><strong>Preparation Time:</strong> {{ tiffin.preparation_time }} minutes</li>
+                                <li><strong>Spice Level:</strong> {{ tiffin.get_spice_level_display }}</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Dietary Info</h5>
+                            <div class="mb-2">
+                                {% if tiffin.is_vegetarian %}
+                                    <span class="badge bg-success fs-6"><i class="fas fa-leaf"></i> Vegetarian</span>
+                                {% else %}
+                                    <span class="badge bg-danger fs-6"><i class="fas fa-drumstick-bite"></i> Non-Vegetarian</span>
+                                {% endif %}
+                            </div>
+                            {% if tiffin.category %}
+                                <p><strong>Category:</strong> {{ tiffin.category.name }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if tiffin.ingredients %}
+                    <div class="mb-3">
+                        <h5>Ingredients</h5>
+                        <p>{{ tiffin.ingredients }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Reviews Section -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-star"></i> Reviews 
+                        {% if avg_rating %}
+                            <span class="badge bg-warning">{{ avg_rating|floatformat:1 }}/5</span>
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if user.is_authenticated and user.user_type == 'customer' %}
+                        <form method="post" action="{% url 'add_review' tiffin.pk %}" class="mb-4">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{ review_form.rating }}
+                                </div>
+                                <div class="col-md-7">
+                                    {{ review_form.comment }}
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary">Add Review</button>
+                                </div>
+                            </div>
+                        </form>
+                    {% endif %}
+                    
+                    {% for review in reviews %}
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ review.customer.username }}</strong>
+                                <div>
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <i class="fas fa-star text-warning"></i>
+                                        {% else %}
+                                            <i class="far fa-star text-muted"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if review.comment %}
+                                <p class="mb-1">{{ review.comment }}</p>
+                            {% endif %}
+                            <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">No reviews yet. Be the first to review!</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Provider Info & Order -->
+        <div class="col-md-4">
+            <div class="card no-hover">
+                <div class="card-header">
+                    <h5><i class="fas fa-store"></i> Provider Info</h5>
+                </div>
+                <div class="card-body">
+                    <h6>{{ tiffin.provider.business_name }}</h6>
+                    <p class="text-muted">{{ tiffin.provider.description|truncatewords:20 }}</p>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted">
+                            <i class="fas fa-map-marker-alt"></i> {{ tiffin.provider.user.city }}
+                        </small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Rating:</span>
+                            <span>{% if avg_rating %}{{ avg_rating|floatformat:1 }}{% else %}0.0{% endif %}/5</span>
+                        </div>
+                        <!-- <div class="d-flex justify-content-between">
+                            <span>Total Orders:</span>
+                            <span>{{ tiffin.provider.total_orders }}</span>
+                        </div> -->
+                        <div class="d-flex justify-content-between">
+                            <span>Min Order:</span>
+                            <span>₹{{ tiffin.provider.min_order_amount }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Delivery Charge:</span>
+                            <span>₹{{ tiffin.provider.delivery_charge }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Phone Number:</span>
+                            <span>{{ tiffin.provider.phone_number }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Delivery Areas:</strong>
+                        <p class="small">{{ tiffin.provider.delivery_areas }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order Section -->
+            <div class="card mt-3">
+                <div class="card-body text-center">
+                    <h3 class="text-primary mb-3">₹{{ tiffin.price }}</h3>
+                    
+                    {% if tiffin.is_available %}
+                        {% if user.is_authenticated and user.user_type == 'customer' %}
+                            <button class="btn btn-primary btn-lg w-100 mb-2" onclick="addToCart({{ tiffin.id }})">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <a href="{% url 'view_cart' %}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-shopping-cart"></i> View Cart
+                            </a>
+                        {% elif user.is_authenticated %}
+                            <p class="text-muted">Only customers can order tiffins</p>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-primary btn-lg w-100">Login to Order</a>
+                        {% endif %}
+                    {% else %}
+                        <button class="btn btn-secondary btn-lg w-100" disabled>
+                            Currently Unavailable
+                        </button>
+                    {% endif %}
+                    
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-clock"></i> Ready in {{ tiffin.preparation_time }} minutes
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function addToCart(tiffinId) {
+    fetch(`/orders/add-to-cart/${tiffinId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Toastify({
+              text: 'Item added to cart!',
+              gravity: 'top',
+              position: 'right',
+              style: { background: 'linear-gradient(to left, black, chocolate)', color: '#fff' }
+            }).showToast();
+            const badge = document.getElementById('cartCount');
+            if (badge && typeof data.cart_count !== 'undefined') {
+                badge.textContent = data.cart_count;
+            }
+        } else {
+            Toastify({
+              text: (data.error || 'Error adding item to cart'),
+              gravity: 'top',
+              position: 'right',
+              style: { background: '#dc3545', color: '#fff' }
+            }).showToast();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Toastify({
+          text: 'Network error adding item to cart',
+          gravity: 'top',
+          position: 'right',
+          style: { background: '#dc3545', color: '#fff' }
+        }).showToast();
+    });
+}
+</script>
+{% endblock %}

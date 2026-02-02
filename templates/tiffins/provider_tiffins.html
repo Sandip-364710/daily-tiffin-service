@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}My Tiffins - Tiffin Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-utensils text-primary"></i> My Tiffin Services</h1>
+            <a href="{% url 'add_tiffin' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New Tiffin
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for tiffin in tiffins %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                {% if tiffin.image %}
+                    <img src="{{ tiffin.image.url }}" class="card-img-top" alt="{{ tiffin.name }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                    <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background-color: #f8f9fa;">
+                        <i class="fas fa-utensils fa-3x text-muted"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ tiffin.name }}</h5>
+                    <p class="card-text">{{ tiffin.description|truncatewords:15 }}</p>
+                    
+                    <div class="mb-2">
+                        <span class="badge bg-secondary">{{ tiffin.get_meal_type_display }}</span>
+                        {% if tiffin.is_vegetarian %}
+                            <span class="badge bg-success"><i class="fas fa-leaf"></i> Veg</span>
+                        {% else %}
+                            <span class="badge bg-danger"><i class="fas fa-drumstick-bite"></i> Non-Veg</span>
+                        {% endif %}
+                        {% if tiffin.is_available %}
+                            <span class="badge bg-success">Available</span>
+                        {% else %}
+                            <span class="badge bg-danger">Unavailable</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="h5 text-primary mb-0">₹{{ tiffin.price }}</span>
+                            <small class="text-muted">
+                                <i class="fas fa-clock"></i> {{ tiffin.preparation_time }} min
+                            </small>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'tiffin_detail' tiffin.pk %}" class="btn btn-outline-primary btn-sm">View</a>
+                            <a href="{% url 'edit_tiffin' tiffin.pk %}" class="btn btn-primary btn-sm">Edit</a>
+                            <button id="toggleBtn-{{ tiffin.id }}" class="btn btn-outline-danger btn-sm" onclick="toggleAvailability({{ tiffin.id }})">
+                                {% if tiffin.is_available %}Disable{% else %}Enable{% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                <h4>No Tiffin Services Yet</h4>
+                <p class="text-muted">Start by adding your first tiffin service to attract customers.</p>
+                <a href="{% url 'add_tiffin' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus"></i> Add Your First Tiffin
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function toggleAvailability(tiffinId) {
+    const btn = document.getElementById(`toggleBtn-${tiffinId}`);
+    if (!btn) return;
+    btn.disabled = true;
+    fetch(`/provider/tiffin/${tiffinId}/toggle/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': window.CSRF_TOKEN,
+            'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data && data.success) {
+            btn.textContent = data.label;
+        } else {
+            alert(data && data.error ? data.error : 'Failed to toggle');
+        }
+    })
+    .catch(() => alert('Network error'))
+    .finally(() => { btn.disabled = false; });
+}
+</script>
+{% endblock %}

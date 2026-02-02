@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart - Tiffin Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4"><i class="fas fa-shopping-cart text-primary"></i> Shopping Cart</h1>
+        </div>
+    </div>
+
+    {% if cart_items %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    {% for item in cart_items %}
+                    <div class="row align-items-center border-bottom py-3" id="cart-row-{{ item.id }}">
+                        <div class="col-md-6">
+                            <h6>{{ item.name }}</h6>
+                            <small class="text-muted">{{ item.provider_name }}</small>
+                        </div>
+                        <div class="col-md-2">
+                            <span class="fw-bold">₹{{ item.price }}</span>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity('{{ item.id }}', -1)">-</button>
+                                <input id="qty-{{ item.id }}" type="text" class="form-control text-center" value="{{ item.quantity }}" readonly>
+                                <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity('{{ item.id }}', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <span class="fw-bold" id="item-total-{{ item.id }}">₹{{ item.total|floatformat:2 }}</span>
+                            <br>
+                            <button class="btn btn-sm btn-outline-danger" onclick="removeItem('{{ item.id }}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal:</span>
+                        <span id="cart-subtotal">₹{{ subtotal|floatformat:2 }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Delivery Charges:</span>
+                        <span id="cart-delivery">₹{{ delivery_charge|floatformat:2 }}</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Total:</strong>
+                        <strong id="cart-total">₹{{ grand_total|floatformat:2 }}</strong>
+                    </div>
+                    
+                    <a href="{% url 'checkout' %}" class="btn btn-primary w-100 mb-2">
+                        <i class="fas fa-credit-card"></i> Proceed to Checkout
+                    </a>
+                    <a href="{% url 'tiffin_list' %}" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-arrow-left"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                <h4>Your cart is empty</h4>
+                <p class="text-muted">Add some delicious tiffins to get started!</p>
+                <a href="{% url 'tiffin_list' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-utensils"></i> Browse Tiffins
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function updateQuantity(itemId, change) {
+    const formData = new URLSearchParams();
+    formData.append('change', String(change));
+    fetch(`/orders/cart/update/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': window.CSRF_TOKEN,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),
+        credentials: 'same-origin',
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (!data.success) {
+            alert('Failed to update cart');
+            return;
+        }
+        // Update navbar cart count
+        const badge = document.getElementById('cartCount');
+        if (badge) badge.textContent = data.cart_count;
+        // Update totals
+        const subtotalEl = document.getElementById('cart-subtotal');
+        const totalEl = document.getElementById('cart-total');
+        const formatINR = v => `₹${Number(v).toFixed(2)}`;
+        if (subtotalEl) subtotalEl.textContent = formatINR(data.cart_subtotal);
+        const deliveryEl = document.getElementById('cart-delivery');
+        if (deliveryEl) deliveryEl.textContent = formatINR(data.cart_delivery);
+        if (totalEl) totalEl.textContent = formatINR(data.cart_grand_total);
+        if (data.removed) {
+            // Remove row
+            const row = document.getElementById(`cart-row-${itemId}`);
+            if (row) row.remove();
+            // If cart empty, reload to show empty state
+            if (Number(data.cart_count) === 0) {
+                window.location.reload();
+            }
+            return;
+        }
+        // Update quantity and item total
+        const qtyInput = document.getElementById(`qty-${itemId}`);
+        if (qtyInput) qtyInput.value = data.quantity;
+        const itemTotalEl = document.getElementById(`item-total-${itemId}`);
+        if (itemTotalEl) itemTotalEl.textContent = formatINR(data.item_total);
+    })
+    .catch(() => alert('Error updating cart'));
+}
+
+function removeItem(itemId) {
+    if (confirm('Remove this item from cart?')) {
+        fetch(`/orders/cart/remove/${itemId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': window.CSRF_TOKEN,
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            credentials: 'same-origin',
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (!data.success) {
+                alert('Failed to remove item');
+                return;
+            }
+            const row = document.getElementById(`cart-row-${itemId}`);
+            if (row) row.remove();
+            const badge = document.getElementById('cartCount');
+            if (badge) badge.textContent = data.cart_count;
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+            const formatINR = v => `₹${Number(v).toFixed(2)}`;
+            if (subtotalEl) subtotalEl.textContent = formatINR(data.cart_subtotal || 0);
+            const deliveryEl2 = document.getElementById('cart-delivery');
+            if (deliveryEl2) deliveryEl2.textContent = formatINR(data.cart_delivery || 0);
+            if (totalEl) totalEl.textContent = formatINR(data.cart_grand_total || 0);
+            if (Number(data.cart_count) === 0) {
+                window.location.reload();
+            }
+        })
+        .catch(() => alert('Error removing item'));
+    }
+}
+</script>
+{% endblock %}

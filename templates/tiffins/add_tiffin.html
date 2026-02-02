@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add Tiffin - Tiffin Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        {% if edit_mode %}
+                          <h2><i class="fas fa-edit text-primary"></i> Edit Tiffin Service</h2>
+                          <p class="text-muted">Update your tiffin details below</p>
+                        {% else %}
+                          <h2><i class="fas fa-plus text-primary"></i> Add New Tiffin Service</h2>
+                          <p class="text-muted">Create a new tiffin offering for your customers</p>
+                        {% endif %}
+                    </div>
+                    {% if no_categories %}
+                      <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="fas fa-triangle-exclamation me-2"></i>
+                        No active categories found. Please add a category in admin.
+                      </div>
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        {% if edit_mode %}
+                          <button type="submit" class="btn btn-primary w-100 mb-3">
+                              <i class="fas fa-save"></i> Update Tiffin Service
+                          </button>
+                        {% else %}
+                          <button type="submit" class="btn btn-primary w-100 mb-3">
+                              <i class="fas fa-save"></i> Add Tiffin Service
+                          </button>
+                        {% endif %}
+                    </form>
+                    
+                    <div class="text-center">
+                        <a href="{% url 'provider_tiffins' %}" class="text-muted">Back to My Tiffins</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

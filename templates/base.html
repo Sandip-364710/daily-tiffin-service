@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="kesri">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TiffinWala - Fresh Homemade Meals{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- Toastify -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --primary: #FF6B35;
+            --primary-light: #FF8B60;
+            --primary-dark: #E55A2B;
+            --secondary: #2D3047;
+            --accent: #FFD166;
+            --light: #F8F9FA;
+            --dark: #212529;
+            --gray: #6C757D;
+            --light-gray: #E9ECEF;
+            --success: #20C997;
+            --warning: #FFD166;
+            --danger: #EF476F;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s ease;
+            --transition-slow: all 0.5s ease;
+        }
+
+        [data-theme="blue"] {
+            --primary: #4361EE;
+            --primary-light: #4895EF;
+            --primary-dark: #3A0CA3;
+            --secondary: #2B2D42;
+            --accent: #4CC9F0;
+            --success: #4ADE80;
+            --warning: #FBBF24;
+            --danger: #F87171;
+        }
+
+        [data-theme="green"] {
+            --primary: #10B981;
+            --primary-light: #34D399;
+            --primary-dark: #059669;
+            --secondary: #1F2937;
+            --accent: #A7F3D0;
+        }
+
+        /* ===== BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            padding-top: 80px;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            height: 80px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar.scrolled {
+            height: 70px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary) !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .navbar-toggler {
+            border: none;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .navbar-toggler:hover {
+            background-color: var(--light-gray);
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--dark) !important;
+            padding: 8px 16px !important;
+            margin: 0 4px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background-color: var(--light-gray);
+            color: var(--primary) !important;
+            transform: translateY(-1px);
+        }
+
+        .nav-link.active {
+            background-color: var(--primary);
+            color: white !important;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px;
+            height: 5px;
+            background-color: var(--primary);
+            border-radius: 50%;
+        }
+
+        /* ===== DROPDOWNS ===== */
+        .dropdown-menu {
+            border: none;
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            padding: 8px;
+            min-width: 200px;
+            margin-top: 10px;
+            border: 1px solid var(--light-gray);
+        }
+
+        .dropdown-item {
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--light-gray);
+            transform: translateX(5px);
+        }
+
+        .dropdown-item.text-danger:hover {
+            background-color: rgba(239, 71, 111, 0.1);
+        }
+
+        .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            padding: 10px 24px;
+            transition: var(--transition);
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #34D399);
+            border: none;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #FB7185);
+            border: none;
+        }
+
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.875rem;
+        }
+
+        .btn-lg {
+            padding: 14px 32px;
+            font-size: 1.1rem;
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bg-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light)) !important;
+            border: none;
+        }
+
+        .bg-success {
+            background: linear-gradient(135deg, var(--success), #34D399) !important;
+        }
+
+        .bg-danger {
+            background: linear-gradient(135deg, var(--danger), #FB7185) !important;
+        }
+
+        .bg-warning {
+            background: linear-gradient(135deg, var(--warning), #FBBF24) !important;
+        }
+
+        /* ===== AVATARS ===== */
+        .avatar-sm {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .avatar-md {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            border: none;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            overflow: hidden;
+            background: white;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ===== FORMS ===== */
+        .form-control {
+            border: 2px solid var(--light-gray);
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .form-control-lg {
+            padding: 14px 20px;
+            font-size: 1rem;
+        }
+
+        .input-group .form-control:focus {
+            z-index: 3;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--secondary);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            margin-top: auto;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        footer h5 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        footer a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        footer ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        footer .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        footer .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        footer .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .text-primary {
+            color: var(--primary) !important;
+        }
+
+        .text-gray {
+            color: var(--gray) !important;
+        }
+
+        .text-light-gray {
+            color: var(--light-gray) !important;
+        }
+
+        .bg-light-gray {
+            background-color: var(--light-gray) !important;
+        }
+
+        .bg-primary-light {
+            background-color: rgba(255, 107, 53, 0.1) !important;
+        }
+
+        .rounded-xl {
+            border-radius: var(--radius-lg) !important;
+        }
+
+        .shadow-hover {
+            transition: var(--transition);
+        }
+
+        .shadow-hover:hover {
+            box-shadow: var(--shadow) !important;
+        }
+
+        .transition-all {
+            transition: var(--transition);
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-gray);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .navbar {
+                height: 70px;
+            }
+            
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+            
+            .brand-logo {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .nav-link {
+                padding: 10px !important;
+                margin: 2px 0;
+            }
+            
+            .dropdown-menu {
+                margin-top: 5px;
+            }
+            
+            .btn-lg {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .display-4 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            .btn {
+                padding: 8px 20px;
+            }
+            
+            .card-body {
+                padding: 1.25rem;
+            }
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .navbar,
+            footer,
+            .btn {
+                display: none !important;
+            }
+            
+            body {
+                padding-top: 0;
+            }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg fixed-top border-0">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <div class="brand-logo">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <span class="d-none d-sm-inline">
+                Tiffin<span style="color: var(--secondary);">Wala</span>
+            </span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">
+                        <i class="fas fa-home me-1"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'tiffin' in request.path %}active{% endif %}" href="{% url 'tiffin_list' %}">
+                        <i class="fas fa-utensils me-1"></i> Menu
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-calendar-alt me-1"></i> Plans
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-question-circle me-1"></i> How It Works
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'order_history' %}">
+                        <i class="fas fa-history me-1"></i> Orders
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <ul class="navbar-nav align-items-center">
+                <!-- Theme Toggle -->
+                <li class="nav-item dropdown me-3">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-palette me-2"></i> Theme
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" onclick="setTheme('kesri')">
+                                <span class="color-dot me-2" style="background: #FF6B35;"></span> 
+                                <span>Orange Theme</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" onclick="setTheme('blue')">
+                                <span class="color-dot me-2" style="background: #4361EE;"></span> 
+                                <span>Blue Theme</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" onclick="setTheme('green')">
+                                <span class="color-dot me-2" style="background: #10B981;"></span> 
+                                <span>Green Theme</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Cart Icon -->
+                {% if user.is_authenticated %}
+                <li class="nav-item me-3">
+                    <a class="nav-link position-relative" href="{% url 'view_cart' %}" 
+                       title="View Cart">
+                        <i class="fas fa-shopping-cart fa-lg"></i>
+                        {% if request.session.cart %}
+                        <span class="badge bg-primary position-absolute top-0 start-100 translate-middle badge-pill">
+                            {{ request.session.cart|length }}
+                            <span class="visually-hidden">items in cart</span>
+                        </span>
+                        {% endif %}
+                    </a>
+                </li>
+
+                <!-- User Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="avatar-sm me-2">
+                            <span>{{ user.username|first|upper }}</span>
+                        </div>
+                        <span class="d-none d-md-inline">{{ user.username }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'dashboard' %}">
+                                <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'order_history' %}">
+                                <i class="fas fa-history me-2"></i> Order History
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user-cog me-2"></i> Settings
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt me-2"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% else %}
+                <!-- Login/Signup -->
+                <li class="nav-item me-2">
+                    <a class="nav-link" href="{% url 'login' %}">
+                        <i class="fas fa-sign-in-alt me-1"></i> Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="{% url 'signup' %}">
+                        <i class="fas fa-user-plus me-1"></i> Sign Up
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ================= MAIN CONTENT ================= -->
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="pt-5">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Company Info -->
+            <div class="col-lg-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="brand-logo me-3">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h4 class="fw-bold mb-0">TiffinWala</h4>
+                </div>
+                <p class="text-light-gray mb-4">
+                    Delivering love in every bite. Fresh homemade meals crafted with care 
+                    and delivered with warmth to your doorstep.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-white fs-5" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-white fs-5" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-white fs-5" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-white fs-5" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6">
+                <h5 class="fw-bold mb-4">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="mb-2"><a href="{% url 'tiffin_list' %}">Our Menu</a></li>
+                    <li class="mb-2"><a href="#">Subscription Plans</a></li>
+                    <li class="mb-2"><a href="#">Become a Cook</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-3 col-md-6">
+                <h5 class="fw-bold mb-4">Contact Info</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-map-marker-alt me-2 mt-1"></i>
+                        <span>123 Food Street, Mumbai, India</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-phone me-2"></i>
+                        <span>+91 98765 43210</span>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <i class="fas fa-envelope me-2"></i>
+                        <span>hello@tiffinwala.com</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-lg-3">
+                <h5 class="fw-bold mb-4">Stay Updated</h5>
+                <p class="text-light-gray mb-3">
+                    Subscribe to our newsletter for the latest updates and offers.
+                </p>
+                <div class="input-group">
+                    <input type="email" 
+                           class="form-control" 
+                           placeholder="Your email"
+                           aria-label="Email for newsletter">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <p class="small text-light-gray mt-2">
+                    We respect your privacy. Unsubscribe at any time.
+                </p>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="my-4 border-white-10">
+
+        <!-- Bottom Footer -->
+        <div class="row align-items-center py-4">
+            <div class="col-md-6">
+                <p class="mb-0 text-light-gray">
+                    © {% now "Y" %} TiffinWala. All rights reserved.
+                </p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="d-flex gap-3 justify-content-md-end">
+                    <a href="#" class="text-light-gray small">Terms of Service</a>
+                    <a href="#" class="text-light-gray small">Privacy Policy</a>
+                    <a href="#" class="text-light-gray small">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+/* ===== THEME MANAGER ===== */
+(function () {
+    const THEMES = ['kesri', 'blue', 'green'];
+    let theme = localStorage.getItem('theme') || 'kesri';
+    
+    if (!THEMES.includes(theme)) {
+        theme = 'kesri';
+    }
+    
+    document.documentElement.setAttribute('data-theme', theme);
+
+    window.setTheme = function (t) {
+        if (!THEMES.includes(t)) return;
+        
+        localStorage.setItem('theme', t);
+        document.documentElement.setAttribute('data-theme', t);
+        
+        // Show theme change notification
+        Toastify({
+            text: `Theme changed to ${getThemeName(t)}`,
+            duration: 2000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "linear-gradient(135deg, var(--primary), var(--primary-light))",
+            className: "shadow-sm",
+            stopOnFocus: true
+        }).showToast();
+    };
+
+    function getThemeName(t) {
+        const names = {
+            'kesri': 'Orange',
+            'blue': 'Blue',
+            'green': 'Green'
+        };
+        return names[t] || t;
+    }
+})();
+
+/* ===== NAVBAR SCROLL EFFECT ===== */
+window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 20) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+/* ===== TOASTIFY DEFAULT CONFIG ===== */
+Toastify({
+    text: "Welcome to TiffinWala! 🍱",
+    duration: 3000,
+    gravity: "top",
+    position: "right",
+    backgroundColor: "linear-gradient(135deg, var(--primary), var(--primary-light))",
+    className: "shadow-sm",
+    stopOnFocus: true
+}).showToast();
+
+/* ===== FORM VALIDATION HELPER ===== */
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function validatePhone(phone) {
+    const re = /^[0-9]{10}$/;
+    return re.test(phone);
+}
+
+/* ===== LOADING STATE FOR BUTTONS ===== */
+function setLoading(button, isLoading) {
+    if (isLoading) {
+        button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Loading...';
+        button.disabled = true;
+    } else {
+        // Reset button text - this should be customized per button
+        button.innerHTML = button.getAttribute('data-original-text') || button.innerHTML;
+        button.disabled = false;
+    }
+}
+
+// Add loading state to all buttons with data-loading attribute
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[data-loading]').forEach(button => {
+        button.setAttribute('data-original-text', button.innerHTML);
+        button.addEventListener('click', function() {
+            setLoading(this, true);
+        });
+    });
+});
+
+/* ===== SMOOTH SCROLL ===== */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+/* ===== BACK TO TOP BUTTON ===== */
+const backToTopButton = document.createElement('button');
+backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTopButton.className = 'btn btn-primary btn-lg shadow-lg position-fixed bottom-3 end-3 rounded-circle d-none';
+backToTopButton.style.width = '60px';
+backToTopButton.style.height = '60px';
+backToTopButton.style.zIndex = '1000';
+backToTopButton.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+document.body.appendChild(backToTopButton);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTopButton.classList.remove('d-none');
+        backToTopButton.classList.add('animate__animated', 'animate__fadeIn');
+    } else {
+        backToTopButton.classList.add('d-none');
+    }
+});
+</script>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

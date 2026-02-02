@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+
+{% block title %}Browse Tiffins - Tiffin Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Search and Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4 col-lg-5">
+                            <input type="text" class="form-control" name="search" placeholder="Search tiffins..." value="{{ search_query }}">
+                        </div>
+                        <div class="col-md-3 col-lg-2">
+                            <select class="form-select" name="meal_type">
+                                <option value="">All Meals</option>
+                                <option value="breakfast" {% if selected_meal_type == 'breakfast' %}selected{% endif %}>Breakfast</option>
+                                <option value="lunch" {% if selected_meal_type == 'lunch' %}selected{% endif %}>Lunch</option>
+                                <option value="dinner" {% if selected_meal_type == 'dinner' %}selected{% endif %}>Dinner</option>
+                                <option value="snacks" {% if selected_meal_type == 'snacks' %}selected{% endif %}>Snacks</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-lg-2">
+                            <input type="text" class="form-control" name="city" placeholder="City" value="{{ selected_city }}">
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <select class="form-select" name="is_veg">
+                                <option value="" {% if not selected_is_veg %}selected{% endif %}>All Types</option>
+                                <option value="true" {% if selected_is_veg %}selected{% endif %}>Vegetarian Only</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 col-lg-1">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h2>Available Tiffins</h2>
+            <p class="text-muted">{{ tiffins|length }} tiffin(s) found</p>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for tiffin in tiffins %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if tiffin.image %}
+                    <img src="{{ tiffin.image.url }}" class="card-img-top" alt="{{ tiffin.name }}" style="height: 250px; object-fit: cover;">
+                {% else %}
+                    <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 250px; background-color: #f8f9fa;">
+                        <i class="fas fa-utensils fa-3x text-muted"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ tiffin.name }}</h5>
+                    <p class="card-text">{{ tiffin.description|truncatewords:15 }}</p>
+                    
+                    <div class="mb-2">
+                        <small class="text-muted">
+                            <i class="fas fa-store"></i> {{ tiffin.provider.business_name }}
+                        </small>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <small class="text-muted">
+                            <i class="fas fa-map-marker-alt"></i> {{ tiffin.provider.user.city }}
+                        </small>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <span class="badge bg-secondary">{{ tiffin.get_meal_type_display }}</span>
+                        {% if tiffin.is_vegetarian %}
+                            <span class="badge bg-success"><i class="fas fa-leaf"></i> Veg</span>
+                        {% else %}
+                            <span class="badge bg-danger"><i class="fas fa-drumstick-bite"></i> Non-Veg</span>
+                        {% endif %}
+                        <span class="badge bg-warning">{{ tiffin.get_spice_level_display }}</span>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="h5 text-primary mb-0">₹{{ tiffin.price }}</span>
+                            <small class="text-muted">
+                                <i class="fas fa-clock"></i> {{ tiffin.preparation_time }} min
+                            </small>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'tiffin_detail' tiffin.pk %}" class="btn btn-outline-primary">View Details</a>
+                            <div class="d-flex gap-2">
+                              {% if user.is_authenticated and user.user_type == 'customer' %}
+                                  <button class="btn btn-primary" onclick="addToCart({{ tiffin.id }})">
+                                      <i class="fas fa-cart-plus"></i> Add to Cart
+                                  </button>
+                              {% endif %}
+                              {% if user.is_authenticated and user.user_type == 'provider' and tiffin.provider.user.id == user.id %}
+                                  <a href="{% url 'edit_tiffin' tiffin.pk %}" class="btn btn-primary">
+                                      <i class="fas fa-edit"></i> Edit
+                                  </a>
+                                  <button class="btn btn-outline-danger" id="toggleBtn-{{ tiffin.id }}" onclick="toggleAvailability({{ tiffin.id }})">
+                                    {% if tiffin.is_available %}Disable{% else %}Enable{% endif %}
+                                  </button>
+                              {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h4>No tiffins found</h4>
+                <p class="text-muted">Try adjusting your search criteria or browse all categories.</p>
+                <a href="{% url 'tiffin_list' %}" class="btn btn-primary">Clear Filters</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function addToCart(tiffinId) {
+    fetch(`/orders/add-to-cart/${tiffinId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': window.CSRF_TOKEN,
+            'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Toastify({
+              text: 'Item added to cart!',
+              gravity: 'top',
+              position: 'right',
+              style: { background: 'linear-gradient(to left, black, chocolate)', color: '#fff' }
+            }).showToast();
+            const badge = document.getElementById('cartCount');
+            if (badge) {
+                badge.textContent = data.cart_count;
+            }
+        } else {
+            Toastify({
+              text: (data.error || 'Error adding item to cart'),
+              gravity: 'top',
+              position: 'right',
+              style: { background: '#dc3545', color: '#fff' }
+            }).showToast();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Toastify({
+          text: 'Network error adding item to cart',
+          gravity: 'top',
+          position: 'right',
+          style: { background: '#dc3545', color: '#fff' }
+        }).showToast();
+    });
+}
+
+function toggleAvailability(tiffinId) {
+    const btn = document.getElementById(`toggleBtn-${tiffinId}`);
+    if (!btn) return;
+    btn.disabled = true;
+    fetch(`/provider/tiffin/${tiffinId}/toggle/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': window.CSRF_TOKEN,
+            'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data && data.success) {
+            btn.textContent = data.label;
+            Toastify({
+              text: 'Availability updated',
+              gravity: 'top',
+              position: 'right',
+              style: { background: '#0dcaf0', color: '#000' }
+            }).showToast();
+        } else {
+            Toastify({
+              text: (data && data.error ? data.error : 'Failed to toggle'),
+              gravity: 'top',
+              position: 'right',
+              style: { background: '#dc3545', color: '#fff' }
+            }).showToast();
+        }
+    })
+    .catch(() => {
+        Toastify({
+          text: 'Network error',
+          gravity: 'top',
+          position: 'right',
+          style: { background: '#dc3545', color: '#fff' }
+        }).showToast();
+    })
+    .finally(() => { btn.disabled = false; });
+}
+</script>
+{% endblock %}

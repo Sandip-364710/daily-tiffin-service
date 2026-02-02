@@ -1,0 +1,245 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login – Tiffin Service</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <style>
+    /* 🔹 FULL SCREEN BACKGROUND IMAGE */
+    body {
+  min-height: 100vh;
+  /* તમારી Gujarati Thali image નું સાચું path */
+  background-image: url('/static/Gujrati.png');
+  background-size: cover;         /* આખી screenમાં fit કરવા */
+  background-position: center;    /* image centerમાં રાખવા */
+  background-repeat: no-repeat;   /* repeat ન થાય */
+  background-attachment: fixed;   /* scroll કરતાં પણ fix રહે */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+}
+
+/* overlay add કરવા હોય તો */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4); /* થોડું dark overlay */
+  z-index: 0;
+}
+
+/* form-container ને overlay ઉપર લાવવા */
+.form-container {
+  position: relative;
+  z-index: 1;
+}
+
+
+    /* Glass Card */
+    .login-card {
+      position: relative;
+      z-index: 1; /* above overlay */
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 2rem;
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% {opacity: 0; transform: translateY(-10px);}
+      100% {opacity: 1; transform: translateY(0);}
+    }
+
+    .login-card h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-card .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #f1f1f1;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Form fields */
+    .form-control {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      border-radius: 12px;
+      padding-left: 2.5rem;
+      transition: all 0.3s ease;
+    }
+    .form-control::placeholder {
+      color: #eee;
+    }
+    .form-control:focus {
+      background: rgba(255,255,255,0.2);
+      border-color: #fff;
+      box-shadow: 0 0 0 .2rem rgba(255,255,255,0.1);
+    }
+
+    /* Icons inside inputs */
+    .icon-field {
+      position: relative;
+    }
+    .icon-field i {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      color: #eee;
+    }
+
+    /* Button */
+    .btn-glass {
+      background: linear-gradient(135deg, #ff6b6b, #ffa15e);
+      border: none;
+      color: #fff;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: transform 0.2s ease;
+    }
+    .btn-glass:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Bottom link */
+    .bottom-link {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .bottom-link a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    /* Toast styling */
+    .toast-custom {
+      background-color: rgba(220,53,69,.9);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Toast for errors -->
+
+
+
+<div class="login-card">
+  <h2>Welcome Back</h2>
+  <div class="subtitle">Sign in to continue your tiffin journey</div>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="mb-3 icon-field">
+      <i class="fas fa-user"></i>
+      <input type="text" id="id_username" name="username" class="form-control" placeholder="Username" value="{{ form.username.value|default:'' }}" required>
+    </div>
+
+    <div class="mb-3 icon-field">
+      <i class="fas fa-lock"></i>
+      <input type="password" id="id_password" name="password" class="form-control" placeholder="Password" required>
+    </div>
+
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" value="on" id="remember" name="remember">
+      <label class="form-check-label" for="remember">Remember me</label>
+    </div>
+
+    <button type="submit" class="btn btn-glass w-100">
+      <i class="fas fa-sign-in-alt"></i> Login
+    </button>
+  </form>
+
+  <div class="bottom-link">
+    Don’t have an account? <a href="{% url 'signup' %}">Sign up</a>
+  </div>
+</div>
+
+  <!-- Hidden container to hold Django messages safely for JS -->
+  <div id="dj-toast-messages" style="display:none;">
+    {% if messages %}
+      {% for message in messages %}
+        <span class="dj-message" data-text="{{ message|escape }}" data-level="{{ message.tags|default:'info' }}"></span>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- Hidden container to hold Django form errors safely for JS -->
+  <div id="dj-form-errors" style="display:none;">
+    {% if form and form.errors %}
+      {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          <span class="dj-error" data-text="{{ field|title }}: {{ error|escape }}"></span>
+        {% endfor %}
+      {% endfor %}
+      {% for err in form.non_field_errors %}
+        <span class="dj-error" data-text="{{ err|escape }}"></span>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script>
+    (function () {
+      var nodes = document.querySelectorAll('#dj-toast-messages .dj-message');
+      nodes.forEach(function (n) {
+        var txt = n.getAttribute('data-text');
+        var level = (n.getAttribute('data-level') || 'info').toLowerCase();
+        if (!txt) return;
+
+        var bg = "linear-gradient(to left, black, chocolate)"; // default
+        if (level.indexOf('success') !== -1) bg = "linear-gradient(to left, black, chocolate)";      // green
+        else if (level.indexOf('warning') !== -1) bg = "#ffc107"; // yellow
+        else if (level.indexOf('error') !== -1) bg = "#dc3545";   // red
+        else if (level.indexOf('info') !== -1) bg = "#0dcaf0";    // cyan
+
+        Toastify({
+          text: txt,
+          className: level,
+          position: "right",
+          gravity: "top",
+          style: { background: bg, color: (level.indexOf('warning') !== -1 ? "#000" : "#fff") }
+        }).showToast();
+      });
+
+      // Show form validation errors as error toasts
+      var errs = document.querySelectorAll('#dj-form-errors .dj-error');
+      errs.forEach(function (n) {
+        var txt = n.getAttribute('data-text');
+        if (!txt) return;
+        Toastify({
+          text: txt,
+          className: "error",
+          position: "right",
+          gravity: "top",
+          style: { background: "#dc3545" }
+        }).showToast();
+      });
+    })();
+  </script>
+  </body>
+  </html>

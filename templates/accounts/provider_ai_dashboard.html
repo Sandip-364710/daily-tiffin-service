@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AI Tools - Provider Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">
+        <i class="fas fa-robot me-2"></i> AI Tools
+    </h1>
+    
+    <div class="row">
+        <!-- Price Optimization Card -->
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 ai-card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-tags me-2"></i> Price Optimization</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Get AI-powered pricing suggestions for your tiffins to maximize profits and stay competitive.</p>
+                    <a href="{% url 'provider_ai_pricing' %}" class="btn btn-primary">
+                        <i class="fas fa-arrow-right me-1"></i> Optimize Prices
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demand Prediction Card -->
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 ai-card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i> Demand Prediction</h5>
+                </div>
+                <div class="card-body">
+                    <p>See predicted demand for your tiffins to better plan your inventory and reduce waste.</p>
+                    <a href="{% url 'provider_ai_demand' %}" class="btn btn-success">
+                        <i class="fas fa-arrow-right me-1"></i> View Predictions
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Insights Card -->
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 ai-card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-users me-2"></i> Customer Insights</h5>
+                </div>
+                <div class="card-body">
+                    <p>Understand your customers better with AI-powered segmentation and behavior analysis.</p>
+                    <a href="{% url 'provider_ai_insights' %}" class="btn btn-info text-white">
+                        <i class="fas fa-arrow-right me-1"></i> View Insights
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Provider Reviews - Tiffin Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-between align-items-center mb-3">
+      <h2 class="mb-0"><i class="fas fa-star text-warning"></i> Customer Ratings & Reviews</h2>
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-arrow-left"></i> Back
+      </a>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h1 class="display-5">{% if avg_rating %}{{ avg_rating|floatformat:1 }}{% else %}0.0{% endif %}</h1>
+          <div class="text-warning mb-2">
+            {% for i in "12345" %}
+              {% if avg_rating and i|add:'0' <= avg_rating %}
+                <i class="fas fa-star"></i>
+              {% else %}
+                <i class="far fa-star"></i>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="text-muted">Average Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      {% if reviews %}
+        <div class="list-group">
+          {% for r in reviews %}
+            <div class="list-group-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{{ r.customer.username }}</strong>
+                  <span class="text-muted">on {{ r.tiffin_service.name }}</span>
+                </div>
+                <div class="text-warning">
+                  {% for i in "12345" %}
+                    {% if i|add:'0' <= r.rating %}
+                      <i class="fas fa-star"></i>
+                    {% else %}
+                      <i class="far fa-star"></i>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="mt-2">{{ r.comment }}</div>
+              <small class="text-muted">{{ r.created_at|date:"M d, Y H:i" }}</small>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="alert alert-info">No reviews yet.</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
