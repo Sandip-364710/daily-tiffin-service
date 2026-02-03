@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}TiffinWala - Fresh Homemade Meals{% endblock %}</title>
+    <title>{% block title %}મમ્મીનું રસોડું - Fresh Homemade Meals{% endblock %}</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -375,6 +375,273 @@
             z-index: 3;
         }
 
+        /* ===== HERO SECTION ===== */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(45, 48, 71, 0.95) 0%, rgba(45, 48, 71, 0.85) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23FF6B35" opacity="0.05" width="1200" height="600"/></svg>');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.05;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            font-weight: 300;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        .hero-buttons .btn {
+            padding: 14px 40px;
+            font-size: 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.4);
+            color: white;
+        }
+
+        .btn-hero-secondary {
+            background: white;
+            color: var(--primary);
+            border: none;
+        }
+
+        .btn-hero-secondary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.4);
+            color: var(--primary);
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .feature-box {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 139, 96, 0.05));
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .feature-box:hover {
+
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+        .step-box {
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px var(--primary);
+        
+    }
+    .step-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px var(--primary);
+    }
+
+     /* Testimonial Card */
+    .testimonial-card {
+         transition: all 0.3s ease;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px var(--primary);
+    }
+    .testimonial-card:hover {
+         transform: translateY(-5px);
+        box-shadow: 0 10px 30px var(--primary);
+    }
+
+        .feature-icon {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .feature-box:hover .feature-icon {
+            color: white;
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .feature-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .feature-box:hover .feature-description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+           
+        /* ===== MEALS SHOWCASE ===== */
+        .meals-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--light) 0%, white 100%);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .meal-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .meal-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .meal-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .meal-card:hover .meal-image {
+            transform: scale(1.1);
+        }
+
+        .meal-content {
+            padding: 1.5rem;
+        }
+
+        .meal-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .meal-description {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .meal-rating {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: var(--warning);
+        }
+
+        .meal-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
         /* ===== FOOTER ===== */
         footer {
             background: var(--secondary);
@@ -551,9 +818,37 @@
             h1 {
                 font-size: 2rem;
             }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-section {
+                padding: 60px 0;
+                min-height: 400px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+                max-width: 300px;
+            }
             
             .display-4 {
                 font-size: 2.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .features-section,
+            .meals-section {
+                padding: 60px 0;
             }
         }
 
@@ -569,6 +864,23 @@
             
             .card-body {
                 padding: 1.25rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+
+            .feature-box {
+                padding: 25px;
+                margin-bottom: 1.5rem;
+            }
+
+            .feature-icon {
+                font-size: 2.5rem;
             }
         }
 
@@ -594,14 +906,15 @@
 <!-- ================= NAVBAR ================= -->
 <nav class="navbar navbar-expand-lg fixed-top border-0">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'home' %}">
-            <div class="brand-logo">
-                <i class="fas fa-utensils"></i>
-            </div>
-            <span class="d-none d-sm-inline">
-                Tiffin<span style="color: var(--secondary);">Wala</span>
-            </span>
-        </a>
+      <a class="navbar-brand" href="{% url 'home' %}">
+    <div class="brand-logo" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+        <i class="fas fa-home" style="color: white; font-size: 1.2rem;"></i>
+    </div>
+    <span class="d-none d-sm-inline" style="margin-left: 8px;">
+        <div style="font-weight: 800; font-size: 1.05rem; color: var(--primary);">મમ્મીનું રસોડું</div>
+        <div style="font-size: 0.75rem; color: var(--secondary); letter-spacing: 1px;">ઘરે બનાવેલું ખાવું</div>
+    </span>
+</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -620,19 +933,9 @@
                         <i class="fas fa-utensils me-1"></i> Menu
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-calendar-alt me-1"></i> Plans
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-question-circle me-1"></i> How It Works
-                    </a>
-                </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'order_history' %}">
+                    <a class="nav-link {% if '/orders/history/' in request.path %}active{% endif %}" href="{% url 'order_history' %}">
                         <i class="fas fa-history me-1"></i> Orders
                     </a>
                 </li>
@@ -671,7 +974,7 @@
                 <!-- Cart Icon -->
                 {% if user.is_authenticated %}
                 <li class="nav-item me-3">
-                    <a class="nav-link position-relative" href="{% url 'view_cart' %}" 
+                    <a class="nav-link position-relative {% if '/orders/cart/' in request.path %}active{% endif %}" href="{% url 'view_cart' %}" 
                        title="View Cart">
                         <i class="fas fa-shopping-cart fa-lg"></i>
                         {% if request.session.cart %}
@@ -749,7 +1052,7 @@
                     <div class="brand-logo me-3">
                         <i class="fas fa-utensils"></i>
                     </div>
-                    <h4 class="fw-bold mb-0">TiffinWala</h4>
+                    <h4 class="fw-bold mb-0">મમ્મીનું રસોડું</h4>
                 </div>
                 <p class="text-light-gray mb-4">
                     Delivering love in every bite. Fresh homemade meals crafted with care 
@@ -777,7 +1080,6 @@
                 <ul class="list-unstyled">
                     <li class="mb-2"><a href="{% url 'home' %}">Home</a></li>
                     <li class="mb-2"><a href="{% url 'tiffin_list' %}">Our Menu</a></li>
-                    <li class="mb-2"><a href="#">Subscription Plans</a></li>
                     <li class="mb-2"><a href="#">Become a Cook</a></li>
                     <li><a href="#">About Us</a></li>
                 </ul>
@@ -797,7 +1099,7 @@
                     </li>
                     <li class="d-flex align-items-center">
                         <i class="fas fa-envelope me-2"></i>
-                        <span>hello@tiffinwala.com</span>
+                        <span>jakhaniyasandip41@gmail.com</span>
                     </li>
                 </ul>
             </div>
@@ -829,10 +1131,10 @@
         <!-- Bottom Footer -->
         <div class="row align-items-center py-4">
             <div class="col-md-6">
-                <p class="mb-0 text-light-gray">
-                    © {% now "Y" %} TiffinWala. All rights reserved.
-                </p>
-            </div>
+    <p class="mb-0 text-light-gray">
+        © {% now "Y" %} મમ્મીનું રસોડું. All rights reserved.
+    </p>
+</div>
             <div class="col-md-6 text-md-end">
                 <div class="d-flex gap-3 justify-content-md-end">
                     <a href="#" class="text-light-gray small">Terms of Service</a>
@@ -866,7 +1168,6 @@
         localStorage.setItem('theme', t);
         document.documentElement.setAttribute('data-theme', t);
         
-        // Show theme change notification
         Toastify({
             text: `Theme changed to ${getThemeName(t)}`,
             duration: 2000,
@@ -898,48 +1199,31 @@ window.addEventListener('scroll', function() {
     }
 });
 
-/* ===== TOASTIFY DEFAULT CONFIG ===== */
-Toastify({
-    text: "Welcome to TiffinWala! 🍱",
-    duration: 3000,
-    gravity: "top",
-    position: "right",
-    backgroundColor: "linear-gradient(135deg, var(--primary), var(--primary-light))",
-    className: "shadow-sm",
-    stopOnFocus: true
-}).showToast();
+/* ===== BACK TO TOP BUTTON ===== */
+const backToTopButton = document.createElement('button');
+backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTopButton.className = 'btn btn-link position-fixed d-none';
+backToTopButton.style.background = 'transparent';
+backToTopButton.style.border = 'none';
+backToTopButton.style.fontSize = '26px';
+backToTopButton.style.width = '55px';
+backToTopButton.style.height = '55px';
+backToTopButton.style.bottom = '25px';
+backToTopButton.style.right = '25px';
+backToTopButton.style.zIndex = '9999';
+backToTopButton.style.cursor = 'pointer';
 
-/* ===== FORM VALIDATION HELPER ===== */
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
+backToTopButton.onclick = () =>
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
-function validatePhone(phone) {
-    const re = /^[0-9]{10}$/;
-    return re.test(phone);
-}
+document.body.appendChild(backToTopButton);
 
-/* ===== LOADING STATE FOR BUTTONS ===== */
-function setLoading(button, isLoading) {
-    if (isLoading) {
-        button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Loading...';
-        button.disabled = true;
-    } else {
-        // Reset button text - this should be customized per button
-        button.innerHTML = button.getAttribute('data-original-text') || button.innerHTML;
-        button.disabled = false;
-    }
-}
-
-// Add loading state to all buttons with data-loading attribute
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('[data-loading]').forEach(button => {
-        button.setAttribute('data-original-text', button.innerHTML);
-        button.addEventListener('click', function() {
-            setLoading(this, true);
-        });
-    });
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 300) {
+    backToTopButton.classList.remove('d-none');
+  } else {
+    backToTopButton.classList.add('d-none');
+  }
 });
 
 /* ===== SMOOTH SCROLL ===== */
@@ -957,26 +1241,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             });
         }
     });
-});
-
-/* ===== BACK TO TOP BUTTON ===== */
-const backToTopButton = document.createElement('button');
-backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
-backToTopButton.className = 'btn btn-primary btn-lg shadow-lg position-fixed bottom-3 end-3 rounded-circle d-none';
-backToTopButton.style.width = '60px';
-backToTopButton.style.height = '60px';
-backToTopButton.style.zIndex = '1000';
-backToTopButton.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-
-document.body.appendChild(backToTopButton);
-
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        backToTopButton.classList.remove('d-none');
-        backToTopButton.classList.add('animate__animated', 'animate__fadeIn');
-    } else {
-        backToTopButton.classList.add('d-none');
-    }
 });
 </script>
 

@@ -1,0 +1,45 @@
+
+version: "3.9"
+
+services:
+  web:
+    build: .
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./tiffin_service:/tiffin
+    command: python manage.py runserver 0.0.0.0:8000
+
+
+
+# version: "3.9"
+
+# services:
+#   db:
+#     image: mysql:8.0
+#     restart: always
+#     environment:
+#       MYSQL_DATABASE: bhaktibhav
+#       MYSQL_USER: skpatel
+#       MYSQL_PASSWORD: 364710
+#       MYSQL_ROOT_PASSWORD: 364710
+#     ports:
+#        - "3307:3306"
+#     volumes:
+#       - mysql_data:/var/lib/mysql
+
+#   web:
+#     build: .
+#     ports:
+#       - "8003:8000"
+#     volumes:
+#       - ./bhaktibhav:/temple
+#     working_dir: /temple
+#     env_file:
+#       - .env
+#     depends_on:
+#       - db
+#     command: python manage.py runserver 0.0.0.0:8000
+
+# volumes:
+#   mysql_data:

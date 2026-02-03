@@ -134,44 +134,84 @@
 
 {% block scripts %}
 <script>
+// Get CSRF token from cookie or meta tag
+function getCsrfToken() {
+    let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+    
+    if (!csrfToken) {
+        csrfToken = document.cookie.split(';').find(c => c.trim().startsWith('csrftoken='));
+        if (csrfToken) {
+            csrfToken = csrfToken.split('=')[1];
+        }
+    }
+    
+    if (!csrfToken) {
+        csrfToken = window.CSRF_TOKEN;
+    }
+    
+    return csrfToken;
+}
+
 function addToCart(tiffinId) {
+    const csrfToken = getCsrfToken();
+    
+    if (!csrfToken) {
+        Toastify({
+            text: 'Security token missing. Please refresh the page.',
+            gravity: 'top',
+            position: 'right',
+            style: { background: '#dc3545', color: '#fff' },
+            duration: 3000
+        }).showToast();
+        return;
+    }
+
     fetch(`/orders/add-to-cart/${tiffinId}/`, {
         method: 'POST',
         headers: {
-            'X-CSRFToken': window.CSRF_TOKEN,
+            'X-CSRFToken': csrfToken,
             'Content-Type': 'application/json',
         },
         credentials: 'same-origin',
+        body: JSON.stringify({
+            'quantity': 1
+        })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (response.status === 403) {
+            throw new Error('Permission denied. Please log in again.');
+        }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             Toastify({
-              text: 'Item added to cart!',
-              gravity: 'top',
-              position: 'right',
-              style: { background: 'linear-gradient(to left, black, chocolate)', color: '#fff' }
+                text: '🎉 Item added to cart!',
+                gravity: 'top',
+                position: 'right',
+                style: { background: '#2ecc71', color: '#fff' },
+                duration: 3000
             }).showToast();
+            
             const badge = document.getElementById('cartCount');
             if (badge) {
-                badge.textContent = data.cart_count;
+                badge.textContent = data.cart_count || data.count || 1;
             }
         } else {
-            Toastify({
-              text: (data.error || 'Error adding item to cart'),
-              gravity: 'top',
-              position: 'right',
-              style: { background: '#dc3545', color: '#fff' }
-            }).showToast();
+            throw new Error(data.error || 'Error adding item to cart');
         }
     })
     .catch(error => {
         console.error('Error:', error);
         Toastify({
-          text: 'Network error adding item to cart',
-          gravity: 'top',
-          position: 'right',
-          style: { background: '#dc3545', color: '#fff' }
+            text: '❌ ' + error.message,
+            gravity: 'top',
+            position: 'right',
+            style: { background: '#dc3545', color: '#fff' },
+            duration: 4000
         }).showToast();
     });
 }
@@ -179,43 +219,63 @@ function addToCart(tiffinId) {
 function toggleAvailability(tiffinId) {
     const btn = document.getElementById(`toggleBtn-${tiffinId}`);
     if (!btn) return;
+    
+    const csrfToken = getCsrfToken();
+    
+    if (!csrfToken) {
+        Toastify({
+            text: 'Security token missing. Please refresh the page.',
+            gravity: 'top',
+            position: 'right',
+            style: { background: '#dc3545', color: '#fff' }
+        }).showToast();
+        return;
+    }
+    
     btn.disabled = true;
+    
     fetch(`/provider/tiffin/${tiffinId}/toggle/`, {
         method: 'POST',
         headers: {
-            'X-CSRFToken': window.CSRF_TOKEN,
+            'X-CSRFToken': csrfToken,
             'Content-Type': 'application/json',
         },
         credentials: 'same-origin',
+        body: JSON.stringify({})
     })
-    .then(r => r.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
         if (data && data.success) {
-            btn.textContent = data.label;
+            btn.textContent = data.label || (data.is_available ? 'Disable' : 'Enable');
             Toastify({
-              text: 'Availability updated',
-              gravity: 'top',
-              position: 'right',
-              style: { background: '#0dcaf0', color: '#000' }
+                text: '✅ Availability updated',
+                gravity: 'top',
+                position: 'right',
+                style: { background: '#0dcaf0', color: '#000' },
+                duration: 3000
             }).showToast();
         } else {
-            Toastify({
-              text: (data && data.error ? data.error : 'Failed to toggle'),
-              gravity: 'top',
-              position: 'right',
-              style: { background: '#dc3545', color: '#fff' }
-            }).showToast();
+            throw new Error(data && data.error ? data.error : 'Failed to toggle');
         }
     })
-    .catch(() => {
+    .catch(error => {
+        console.error('Error:', error);
         Toastify({
-          text: 'Network error',
-          gravity: 'top',
-          position: 'right',
-          style: { background: '#dc3545', color: '#fff' }
+            text: '❌ ' + error.message,
+            gravity: 'top',
+            position: 'right',
+            style: { background: '#dc3545', color: '#fff' }
         }).showToast();
     })
-    .finally(() => { btn.disabled = false; });
+    .finally(() => { 
+        btn.disabled = false; 
+    });
 }
 </script>
+
 {% endblock %}
