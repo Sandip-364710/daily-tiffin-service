@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Home - TiffinWala{% endblock %}
+{% block title %}Home - મમ્મીનું રસોડું{% endblock %}
 
 {% block content %}
 <!-- ================= HERO SECTION ================= -->
@@ -9,102 +9,78 @@
         <div class="row align-items-center min-vh-80 py-5">
             <div class="col-lg-6 fade-in">
                 <div class="mb-4">
-                    <span class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill mb-3 d-inline-flex align-items-center">
+                    <span class="badge badge-pill px-4 py-2 mb-3 d-inline-flex align-items-center">
                         <i class="fas fa-fire me-2"></i> #1 Tiffin Service
                     </span>
-                    <h1 class="display-4 fw-bold mb-4">
-                        Homemade Happiness
-                        <span class="text-primary d-block">Delivered Daily</span>
+                    <h1 class="display-3 fw-bold mb-4" style="color: #1a1a1a;">
+                        Delicious
+                        <span class="text-tiffin d-block">Home-Style</span>
+                        <span class="d-block">Tiffins Delivered</span>
                     </h1>
-                    <p class="lead text-gray mb-5">
-                        Experience the taste of home-cooked meals, crafted with love by local chefs 
-                        and delivered fresh to your doorstep. Healthy, delicious, and made just for you.
+                    <p class="lead text-muted mb-5" style="font-size: 1.1rem;">
+                        Experience the taste of authentic home-cooked meals, crafted with love by local chefs 
+                        and delivered fresh to your doorstep.
                     </p>
                 </div>
 
                 <div class="d-flex flex-column flex-sm-row gap-3 mb-5">
                     <a href="{% url 'tiffin_list' %}" 
-                       class="btn btn-primary btn-lg px-5 py-3 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-utensils me-3"></i> Order Now
-                        <i class="fas fa-arrow-right ms-2"></i>
+                       class="btn btn-tiffin btn-lg px-5 py-3 rounded-pill">
+                        <i class="fas fa-utensils me-2"></i> Explore Menu
                     </a>
-                    
-                    {% if not user.is_authenticated %}
-                    <a href="{% url 'signup' %}" 
-                       class="btn btn-outline-primary btn-lg px-5 py-3 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-user-plus me-2"></i> Join as Chef
-                    </a>
-                    {% else %}
-                    <a href="{% url 'dashboard' %}" 
-                       class="btn btn-outline-primary btn-lg px-5 py-3 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
-                    </a>
-                    {% endif %}
                 </div>
 
-                <div class="d-flex align-items-center flex-wrap gap-4">
+                <div class="d-flex align-items-center flex-wrap gap-5">
                     <div class="d-flex align-items-center">
                         <div class="d-flex me-3">
                             {% for i in "12345" %}
-                            <div class="avatar-sm bg-light rounded-circle border d-flex align-items-center justify-content-center me-1">
-                                <i class="fas fa-user text-primary small"></i>
+                            <div class="avatar-circle" style="margin-left: -10px;">
+                                <i class="fas fa-user"></i>
                             </div>
                             {% endfor %}
-                            <div class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center">
-                                <span class="text-white small fw-bold">500+</span>
-                            </div>
                         </div>
                         <div>
-                            <p class="mb-0 small fw-semibold">Trusted Chefs</p>
+                            <p class="mb-0 fw-semibold" style="color: #1a1a1a;">500+ Happy Chefs</p>
                         </div>
                     </div>
                     
                     <div class="d-flex align-items-center">
                         <div class="me-3">
-                            <i class="fas fa-star text-warning fa-lg"></i>
+                            <i class="fas fa-star" style="color: #ffc107; font-size: 1.5rem;"></i>
                         </div>
                         <div>
-                            <p class="mb-0 small fw-semibold">4.8/5.0 Rating</p>
-                            <div class="text-warning small">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                                <span class="text-gray ms-1">(5000+ reviews)</span>
-                            </div>
+                            <p class="mb-0 fw-semibold" style="color: #1a1a1a;">4.8/5.0 Rating</p>
+                            <p class="small text-muted mb-0">(5000+ reviews)</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-6 position-relative mt-5 mt-lg-0">
-    <div class="position-relative">
-        <div class="float-animation">
-            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80"
-                     class="img-fluid" 
-                     alt="Colorful vegetarian Buddha bowl with fresh vegetables and grains"
-                     loading="lazy">
+                <div class="hero-image-wrapper">
+                    <div class="hero-image-card">
+                        <img src="\static\img\signup.png"
+                             class="img-fluid w-100" 
+                             alt="Delicious home-style tiffin meals"
+                             loading="lazy">
+                    </div>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 </section>
 
 <!-- ================= FEATURES SECTION ================= -->
-<section class="py-5 bg-light-gray">
+<section class="features-section py-5">
     <div class="container">
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card border-0 bg-white h-100 p-4 transition-all">
+                <div class="feature-box text-center p-4">
                     <div class="feature-icon mb-4">
-                        <div class="icon-wrapper bg-primary bg-opacity-10 rounded-circle p-3">
-                            <i class="fas fa-heart text-primary fa-2x"></i>
-                        </div>
+                        <i class="fas fa-heart fa-3x text-tiffin"></i>
                     </div>
-                    <h4 class="fw-bold mb-3">Made with Love</h4>
-                    <p class="text-gray mb-0">
+                    <h5 class="fw-bold mb-3">Made with Love</h5>
+                    <p class="text-muted">
                         Every meal is prepared with care and affection, just like home-cooked food 
                         by experienced home chefs.
                     </p>
@@ -112,14 +88,12 @@
             </div>
             
             <div class="col-md-4">
-                <div class="card border-0 bg-white h-100 p-4 transition-all">
+                <div class="feature-box text-center p-4">
                     <div class="feature-icon mb-4">
-                        <div class="icon-wrapper bg-success bg-opacity-10 rounded-circle p-3">
-                            <i class="fas fa-leaf text-success fa-2x"></i>
-                        </div>
+                        <i class="fas fa-leaf fa-3x" style="color: #28a745;"></i>
                     </div>
-                    <h4 class="fw-bold mb-3">Fresh Ingredients</h4>
-                    <p class="text-gray mb-0">
+                    <h5 class="fw-bold mb-3">Fresh Ingredients</h5>
+                    <p class="text-muted">
                         We use only the freshest ingredients sourced from local markets daily. 
                         No preservatives, no compromises.
                     </p>
@@ -127,16 +101,14 @@
             </div>
             
             <div class="col-md-4">
-                <div class="card border-0 bg-white h-100 p-4 transition-all">
+                <div class="feature-box text-center p-4">
                     <div class="feature-icon mb-4">
-                        <div class="icon-wrapper bg-primary bg-opacity-10 rounded-circle p-3">
-                            <i class="fas fa-truck text-primary fa-2x"></i>
-                        </div>
+                        <i class="fas fa-truck fa-3x text-tiffin"></i>
                     </div>
-                    <h4 class="fw-bold mb-3">Fast Delivery</h4>
-                    <p class="text-gray mb-0">
+                    <h5 class="fw-bold mb-3">Fast Delivery</h5>
+                    <p class="text-muted">
                         Hot meals delivered within 30 minutes to ensure you get fresh food 
-                        at the perfect temperature every time.
+                        at the perfect temperature.
                     </p>
                 </div>
             </div>
@@ -146,42 +118,36 @@
 
 <!-- ================= CATEGORIES SECTION ================= -->
 {% if categories %}
-<section class="py-5">
+<section class="meals-section py-5">
     <div class="container">
-        <div class="text-center mb-5 fade-in">
-            <span class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill mb-3">
-                <i class="fas fa-utensils me-2"></i> Explore
-            </span>
+        <div class="section-header mb-5">
             <h2 class="fw-bold mb-3">Popular Cuisines</h2>
-            <p class="text-gray mb-0">Discover diverse flavors from our talented home chefs</p>
+            <p class="text-muted">Discover diverse flavors from our talented home chefs</p>
         </div>
         
         <div class="row g-4">
             {% for category in categories %}
             <div class="col-6 col-md-4 col-lg-3">
                 <a href="{% url 'tiffin_list' %}?category={{ category.id }}" class="text-decoration-none">
-                    <div class="card category-card border-0 overflow-hidden h-100">
-                        <div class="position-relative overflow-hidden">
+                    <div class="meal-card">
+                        <div class="meal-image-wrapper">
                             {% if category.image %}
                             <img src="{{ category.image.url }}" 
-                                 class="img-fluid category-image w-100" 
+                                 class="meal-image" 
                                  alt="{{ category.name }}"
-                                 style="height: 180px; object-fit: cover;"
                                  loading="lazy">
                             {% else %}
-                            <div class="bg-light d-flex align-items-center justify-content-center" 
-                                 style="height: 180px;">
-                                <i class="fas fa-utensils fa-3x text-gray"></i>
+                            <div class="meal-image bg-light d-flex align-items-center justify-content-center">
+                                <i class="fas fa-utensils fa-3x text-muted"></i>
                             </div>
                             {% endif %}
-                            <div class="category-overlay position-absolute top-0 start-0 w-100 h-100 
-                                      bg-gradient-to-top from-black/30 to-transparent opacity-0 
-                                      transition-opacity duration-300"></div>
                         </div>
-                        <div class="card-body p-3">
+                        <div class="meal-content p-3">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0 fw-bold text-dark">{{ category.name }}</h6>
-                                <span class="badge bg-primary">{{ category.tiffin_count }}</span>
+                                <h6 class="mb-0 fw-semibold">{{ category.name }}</h6>
+                                <span class="badge rounded-pill text-tiffin" style="background-color: rgba(46, 204, 113, 0.1);">
+                                    {{ category.tiffin_count }}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -189,17 +155,10 @@
             </div>
             {% empty %}
             <div class="col-12 text-center py-5">
-                <i class="fas fa-utensils fa-4x text-gray mb-3"></i>
-                <h4 class="text-gray">No categories available</h4>
-                <p class="text-gray">Check back soon for delicious options!</p>
+                <i class="fas fa-utensils fa-4x text-muted mb-3"></i>
+                <h4>No categories available</h4>
             </div>
             {% endfor %}
-        </div>
-        
-        <div class="text-center mt-5">
-            <a href="{% url 'tiffin_list' %}" class="btn btn-outline-primary px-5">
-                <i class="fas fa-arrow-right me-2"></i> View All Categories
-            </a>
         </div>
     </div>
 </section>
@@ -207,80 +166,78 @@
 
 <!-- ================= FEATURED TIFFINS ================= -->
 {% if featured_tiffins %}
-<section class="py-5 bg-primary bg-opacity-5">
+<section class="meals-section py-5">
     <div class="container">
-        <div class="text-center mb-5 fade-in">
-            <span class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill mb-3">
-                <i class="fas fa-crown me-2"></i>Chef's Special
-            </span>
-            <h2 class="fw-bold mb-3">Today's Featured Meals</h2>
-            <p class="text-gray">Handpicked by our chefs, just for you</p>
+        <div class="section-header mb-5">
+            <h2 class="fw-bold mb-3">Chef's Special</h2>
+            <p class="text-muted">Handpicked by our chefs, just for you</p>
         </div>
         
         <div class="row g-4">
             {% for tiffin in featured_tiffins %}
-            <div class="col-md-6 col-lg-4 col-xl-3">
-                <div class="card tiffin-card border-0 h-100">
-                    <div class="position-relative overflow-hidden">
+            <div class="col-md-6 col-lg-4">
+                <div class="meal-card">
+                    <div class="meal-image-wrapper position-relative">
                         {% if tiffin.image %}
                         <img src="{{ tiffin.image.url }}" 
-                             class="card-img-top tiffin-image w-100" 
+                             class="meal-image" 
                              alt="{{ tiffin.name }}"
-                             style="height: 200px; object-fit: cover;"
-                             loading="lazy">
+                             loading="lazy"
+                             style="height: 250px;">
                         {% else %}
-                        <div class="bg-light d-flex align-items-center justify-content-center" 
-                             style="height: 200px;">
-                            <i class="fas fa-utensils fa-3x text-gray"></i>
+                        <div class="meal-image bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
+                            <i class="fas fa-utensils fa-3x text-muted"></i>
                         </div>
                         {% endif %}
                         
-                        <div class="tiffin-badges position-absolute top-2 start-2">
+                        <div class="badge-group">
                             {% if tiffin.is_vegetarian %}
-                            <span class="badge bg-success">
+                            <span class="badge rounded-pill" style="background-color: #28a745;">
                                 <i class="fas fa-leaf me-1"></i> Veg
                             </span>
                             {% else %}
-                            <span class="badge bg-danger">
+                            <span class="badge rounded-pill" style="background-color: #dc3545;">
                                 <i class="fas fa-drumstick-bite me-1"></i> Non-Veg
                             </span>
                             {% endif %}
-                        </div>
-                        
-                        {% if tiffin.is_featured %}
-                        <div class="position-absolute top-2 end-2">
-                            <span class="badge bg-warning text-dark">
+                            
+                            {% if tiffin.is_featured %}
+                            <span class="badge rounded-pill" style="background-color: #ffc107; color: #000;">
                                 <i class="fas fa-star me-1"></i> Featured
                             </span>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </div>
                     
-                    <div class="card-body p-4">
+                    <div class="meal-content p-4">
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="card-title fw-bold mb-1 text-truncate">{{ tiffin.name }}</h5>
-                            <span class="h5 text-primary mb-0">₹{{ tiffin.price }}</span>
+                            <h5 class="fw-bold mb-0">{{ tiffin.name }}</h5>
+                            <span class="fw-bold text-tiffin">₹{{ tiffin.price }}</span>
                         </div>
                         
-                        <p class="card-text text-gray small mb-3">
-                            {{ tiffin.description|truncatewords:15 }}
+                        <p class="text-muted small mb-3">
+                            {{ tiffin.description|truncatewords:12 }}
                         </p>
                         
-                        <div class="d-flex justify-content-between align-items-center mt-auto">
-                            <a href="{% url 'tiffin_detail' tiffin.pk %}" 
-                               class="btn btn-outline-primary btn-sm flex-grow-1 me-2">
-                                <i class="far fa-eye me-1"></i> View
-                            </a>
-                            
+                        <div class="rating-stars mb-3">
+                            <i class="fas fa-star fa-sm"></i>
+                            <i class="fas fa-star fa-sm"></i>
+                            <i class="fas fa-star fa-sm"></i>
+                            <i class="fas fa-star fa-sm"></i>
+                            <i class="fas fa-star-half-alt fa-sm"></i>
+                            <span class="text-muted small ms-2">(4.8)</span>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
                             {% if user.is_authenticated and user.user_type == 'customer' %}
-                            <button class="btn btn-primary btn-sm flex-grow-1 add-to-cart-btn"
+                            <button class="btn btn-tiffin btn-sm rounded-pill add-to-cart-btn"
                                     data-tiffin-id="{{ tiffin.id }}">
                                 <i class="fas fa-cart-plus me-1"></i> Add to Cart
                             </button>
                             {% elif not user.is_authenticated %}
                             <a href="{% url 'login' %}?next={{ request.path }}" 
-                               class="btn btn-primary btn-sm flex-grow-1">
-                                <i class="fas fa-sign-in-alt me-1"></i> Login to Order
+                               class="btn btn-tiffin btn-sm rounded-pill">
+                                <i class="fas fa-sign-in-alt me-1"></i> Login
                             </a>
                             {% endif %}
                         </div>
@@ -289,20 +246,13 @@
             </div>
             {% empty %}
             <div class="col-12 text-center py-5">
-                <i class="fas fa-utensils fa-4x text-gray mb-3"></i>
-                <h4 class="text-gray">No featured tiffins available</h4>
-                <p class="text-gray">Check our full menu for delicious options!</p>
-                <a href="{% url 'tiffin_list' %}" class="btn btn-primary mt-3">
+                <i class="fas fa-utensils fa-4x text-muted mb-3"></i>
+                <h4>No featured tiffins available</h4>
+                <a href="{% url 'tiffin_list' %}" class="btn btn-tiffin mt-3 rounded-pill">
                     View Full Menu
                 </a>
             </div>
             {% endfor %}
-        </div>
-        
-        <div class="text-center mt-5">
-            <a href="{% url 'tiffin_list' %}" class="btn btn-outline-primary px-5">
-                <i class="fas fa-utensils me-2"></i> View Full Menu
-            </a>
         </div>
     </div>
 </section>
@@ -311,53 +261,45 @@
 <!-- ================= HOW IT WORKS ================= -->
 <section class="py-5">
     <div class="container">
-        <div class="text-center mb-5 fade-in">
-            <span class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill mb-3">
-                <i class="fas fa-play-circle me-2"></i> Simple Steps
-            </span>
-            <h2 class="fw-bold mb-3">How TiffinWala Works</h2>
-            <p class="text-gray">Get delicious homemade food in 3 simple steps</p>
+        <div class="section-header mb-5 text-center">
+            <h2 class="fw-bold mb-3">મમ્મીનું રસોડું કેવી રીતે કાર્ય કરે છે</h2>
+            <p class="text-muted">Get delicious homemade food in 3 simple steps</p>
         </div>
         
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="text-center px-3">
-                    <div class="step-number mb-4 mx-auto">1</div>
-                    <div class="step-icon mb-4">
-                        <i class="fas fa-search fa-3x text-primary"></i>
+                <div class="step-box text-center ">
+                    <div class="step-icon mb-5">
+                        <i class="fas fa-search fa-3x text-tiffin"></i>
                     </div>
-                    <h4 class="fw-bold mb-3">Browse & Select</h4>
-                    <p class="text-gray">
-                        Explore our wide variety of homemade meals from local chefs in your area. 
-                        Filter by cuisine, dietary preferences, and more.
+                    <h5 class="fw-bold mb-3">Browse & Select</h5>
+                    <p class="text-muted">
+                        Explore our wide variety of homemade meals from local chefs in your area.
                     </p>
                 </div>
             </div>
             
             <div class="col-md-4">
-                <div class="text-center px-3">
-                    <div class="step-number mb-4 mx-auto">2</div>
-                    <div class="step-icon mb-4">
-                        <i class="fas fa-calendar-check fa-3x text-primary"></i>
+                <div class="step-box text-center">
+                    <div class="step-icon mb-5">
+                        <i class="fas fa-calendar-check fa-3x text-tiffin"></i>
                     </div>
-                    <h4 class="fw-bold mb-3">Place Order</h4>
-                    <p class="text-gray">
-                        Choose your meals, select delivery time, customize your order, 
-                        and place your order with ease. Secure payment options available.
+                    <h5 class="fw-bold mb-3">Place Order</h5>
+                    <p class="text-muted">
+                        Choose your meals, select delivery time, and place your order with ease.
                     </p>
                 </div>
             </div>
             
             <div class="col-md-4">
-                <div class="text-center px-3">
-                    <div class="step-number mb-4 mx-auto">3</div>
-                    <div class="step-icon mb-4">
-                        <i class="fas fa-truck fa-3x text-primary"></i>
+                <div class="step-box text-center">
+                   
+                    <div class="step-icon mb-5">
+                        <i class="fas fa-truck fa-3x text-tiffin"></i>
                     </div>
-                    <h4 class="fw-bold mb-3">Enjoy Fresh Food</h4>
-                    <p class="text-gray">
-                        Sit back and relax while we deliver fresh, hot food to your doorstep. 
-                        Track your order in real-time and enjoy your meal!
+                    <h5 class="fw-bold mb-3">Enjoy Fresh Food</h5>
+                    <p class="text-muted">
+                        Track your order and enjoy fresh, hot food at your doorstep!
                     </p>
                 </div>
             </div>
@@ -366,159 +308,91 @@
 </section>
 
 <!-- ================= TESTIMONIALS ================= -->
-<section class="py-5 bg-light-gray">
+<section class="py-5">
     <div class="container">
-        <div class="text-center mb-5 fade-in">
-            <span class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill mb-3">
-                <i class="fas fa-comment-dots me-2"></i> Testimonials
-            </span>
+        <div class="section-header mb-5 text-center">
             <h2 class="fw-bold mb-3">What Our Customers Say</h2>
-            <p class="text-gray">Real stories from real people who love our service</p>
+            <p class="text-muted">Real stories from real people who love our service</p>
         </div>
         
         <div class="row g-4">
             <div class="col-md-6 col-lg-4">
-                <div class="testimonial-card card border-0 bg-white p-4 h-100">
-                    <div class="d-flex align-items-center mb-4">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Priya&backgroundColor=FF6B35" 
+                <div class="testimonial-card p-4 rounded-3">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Priya" 
                              class="rounded-circle me-3" 
-                             width="60" 
-                             height="60" 
+                             width="50" 
+                             height="50" 
                              alt="Priya Sharma"
                              loading="lazy">
                         <div>
-                            <h5 class="mb-1 fw-bold">Priya Sharma</h5>
-                            <p class="text-gray small mb-0">Regular Customer · 2 years</p>
+                            <h6 class="mb-0 fw-bold">Priya Sharma</h6>
+                            <p class="text-muted small mb-0">Regular Customer</p>
                         </div>
                     </div>
-                    <div class="text-warning mb-3">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                    <div class="stars mb-3">
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
                     </div>
-                    <p class="mb-0">
-                        "As a working mother, TiffinWala has been a lifesaver. The food tastes 
-                        just like home-cooked meals! Highly recommended."
+                    <p class="text-muted small">
+                        "મમ્મીનું રસોડું has been a lifesaver for my family."
                     </p>
                 </div>
             </div>
             
             <div class="col-md-6 col-lg-4">
-                <div class="testimonial-card card border-0 bg-white p-4 h-100">
-                    <div class="d-flex align-items-center mb-4">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul&backgroundColor=4361EE" 
+                <div class="testimonial-card p-4 rounded-3">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul" 
                              class="rounded-circle me-3" 
-                             width="60" 
-                             height="60" 
+                             width="50" 
+                             height="50" 
                              alt="Rahul Verma"
                              loading="lazy">
                         <div>
-                            <h5 class="mb-1 fw-bold">Rahul Verma</h5>
-                            <p class="text-gray small mb-0">IT Professional · 1 year</p>
+                            <h6 class="mb-0 fw-bold">Rahul Verma</h6>
+                            <p class="text-muted small mb-0">IT Professional</p>
                         </div>
                     </div>
-                    <div class="text-warning mb-3">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
+                    <div class="stars mb-3">
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star-half-alt fa-sm" style="color: #ffc107;"></i>
                     </div>
-                    <p class="mb-0">
-                        "The variety and quality of food is amazing. It's my daily lunch solution now! 
-                        Healthy, delicious, and affordable."
+                    <p class="text-muted small">
+                        "The variety and quality is amazing. It's my daily lunch solution! Healthy and affordable."
                     </p>
                 </div>
             </div>
             
             <div class="col-md-6 col-lg-4">
-                <div class="testimonial-card card border-0 bg-white p-4 h-100">
-                    <div class="d-flex align-items-center mb-4">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya&backgroundColor=10B981" 
+                <div class="testimonial-card p-4 rounded-3">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya" 
                              class="rounded-circle me-3" 
-                             width="60" 
-                             height="60" 
+                             width="50" 
+                             height="50" 
                              alt="Ananya Patel"
                              loading="lazy">
                         <div>
-                            <h5 class="mb-1 fw-bold">Ananya Patel</h5>
-                            <p class="text-gray small mb-0">Student · 6 months</p>
+                            <h6 class="mb-0 fw-bold">Ananya Patel</h6>
+                            <p class="text-muted small mb-0">Student</p>
                         </div>
                     </div>
-                    <div class="text-warning mb-3">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
+                    <div class="stars mb-3">
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="fas fa-star fa-sm" style="color: #ffc107;"></i>
+                        <i class="far fa-star fa-sm" style="color: #ffc107;"></i>
                     </div>
-                    <p class="mb-0">
-                        "Affordable, delicious, and delivered on time. Perfect for students like me 
-                        who miss home food! The packaging is eco-friendly too."
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ================= CTA SECTION ================= -->
-<section class="py-5 bg-primary text-white position-relative overflow-hidden">
-    <div class="container position-relative z-1">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h2 class="fw-bold mb-3">Ready to Taste the Difference?</h2>
-                <p class="mb-0 opacity-90">
-                    Join thousands of happy customers enjoying homemade meals daily. 
-                    Sign up today and get 20% off your first order!
-                </p>
-            </div>
-            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                <a href="{% url 'signup' %}" class="btn btn-light btn-lg px-5">
-                    <i class="fas fa-rocket me-2"></i> Get Started
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Background Pattern -->
-    <div class="position-absolute top-0 end-0 w-50 h-100 opacity-10">
-        <i class="fas fa-utensils fa-10x position-absolute top-50 end-0 translate-middle-y"></i>
-    </div>
-</section>
-
-<!-- ================= NEWSLETTER ================= -->
-<section class="py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <div class="card border-0 shadow-sm p-5">
-                    <i class="fas fa-envelope-open-text fa-4x text-primary mb-4"></i>
-                    <h2 class="fw-bold mb-3">Stay in the Loop</h2>
-                    <p class="text-gray mb-4">
-                        Subscribe to our newsletter for weekly menus, special offers, 
-                        and cooking tips from our chefs.
-                    </p>
-                    
-                    <form class="row g-2 justify-content-center" id="newsletterForm">
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <input type="email" 
-                                       class="form-control form-control-lg" 
-                                       placeholder="Enter your email address"
-                                       required
-                                       aria-label="Email for newsletter subscription">
-                                <button class="btn btn-primary btn-lg px-4" type="submit">
-                                    Subscribe
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    
-                    <p class="small text-gray mt-3 mb-0">
-                        We respect your privacy. No spam, ever.
+                    <p class="text-muted small">
+                        "Perfect for students like me! Affordable, delicious, and eco-friendly packaging."
                     </p>
                 </div>
             </div>
@@ -529,93 +403,120 @@
 
 {% block extra_css %}
 <style>
+    :root {
+        --tiffin-green: #2ecc71;
+        --tiffin-dark: #1a1a1a;
+    }
+
+    /* Custom Colors */
+    .text-tiffin { color: var(--tiffin-green) !important; }
+    .btn-tiffin {
+        background-color: var(--tiffin-green);
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+    }
+    .btn-tiffin:hover {
+        background-color: #27ae60;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+    }
+    .btn-outline-tiffin {
+        color: var(--tiffin-green);
+        border: 2px solid var(--tiffin-green);
+    }
+    .btn-outline-tiffin:hover {
+        background-color: var(--tiffin-green);
+        color: white;
+    }
+    .badge-pill {
+        background-color: rgba(46, 204, 113, 0.1) !important;
+        color: var(--tiffin-green) !important;
+    }
+
     /* Hero Section */
-    .hero-section {
-        background: linear-gradient(135deg, 
-            rgba(255, 255, 255, 0.95) 0%,
-            rgba(255, 248, 240, 0.9) 50%,
-            rgba(255, 241, 224, 0.8) 100%);
-        position: relative;
+    .hero-section { background: white; }
+    .hero-image-card {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
     }
-    
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23FF6B35' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
-        opacity: 0.3;
-        z-index: -1;
+    .hero-image-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
     }
-    
-    .min-vh-80 {
-        min-height: 80vh;
-    }
-    
-    /* Feature Icons */
-    .feature-icon .icon-wrapper {
-        width: 80px;
-        height: 80px;
+
+    /* Avatar Circles */
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--tiffin-green), #27ae60);
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: var(--transition);
+        color: white;
+        font-size: 0.8rem;
+        border: 3px solid white;
     }
-    
-    .card:hover .feature-icon .icon-wrapper {
-        transform: scale(1.1) rotate(5deg);
-        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+
+    /* Feature Box */
+    .feature-box {
+        border-radius: 15px;
+        transition: all 0.3s ease;
     }
-    
-    .card:hover .feature-icon i {
-        color: white !important;
+    .feature-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
-    
-    /* Category Cards */
-    .category-card {
-        border: 1px solid var(--light-gray);
-        transition: var(--transition);
+
+    /* Meal Cards */
+    .meal-card {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
     }
-    
-    .category-card:hover {
-        border-color: var(--primary);
-        transform: translateY(-8px) scale(1.02);
+    .meal-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
     }
-    
-    .category-image {
-        transition: transform 0.6s ease;
+    .meal-image-wrapper {
+        height: 200px;
+        overflow: hidden;
+        background: #f5f5f5;
     }
-    
-    .category-card:hover .category-image {
+    .meal-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    .meal-card:hover .meal-image {
         transform: scale(1.1);
     }
-    
-    /* Tiffin Cards */
-    .tiffin-card {
-        border: 1px solid var(--light-gray);
-        transition: var(--transition);
+    .badge-group {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
     }
-    
-    .tiffin-card:hover {
-        border-color: var(--primary);
-        transform: translateY(-10px);
+
+    /* Rating Stars */
+    .rating-stars i {
+        color: #ffc107;
+        margin-right: 3px;
     }
-    
-    .tiffin-image {
-        transition: transform 0.6s ease;
-    }
-    
-    .tiffin-card:hover .tiffin-image {
-        transform: scale(1.05);
-    }
-    
-    /* How It Works */
+
+    /* Step Number */
     .step-number {
         width: 60px;
         height: 60px;
-        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        background: linear-gradient(135deg, var(--tiffin-green), #27ae60);
         color: white;
         border-radius: 50%;
         display: flex;
@@ -623,137 +524,38 @@
         justify-content: center;
         font-size: 24px;
         font-weight: bold;
-        position: relative;
+        margin: 0 auto 20px;
     }
     
-    .step-number::after {
-        content: '';
-        position: absolute;
-        top: -4px;
-        left: -4px;
-        right: -4px;
-        bottom: -4px;
-        border: 2px dashed var(--primary-light);
-        border-radius: 50%;
-        opacity: 0.3;
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, var(--tiffin-green), #27ae60);
+        color: white;
+        border-radius: 20px;
     }
-    
-    .step-icon {
-        transition: var(--transition);
+
+    /* Newsletter Card */
+    .newsletter-card {
+        background: #f9f9f9;
+        border: 1px solid #f0f0f0;
     }
-    
-    .step-icon:hover {
-        transform: scale(1.1);
+
+    /* Section Header */
+    .section-header {
+        margin-bottom: 50px;
     }
-    
-    /* Testimonials */
-    .testimonial-card {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .testimonial-card::before {
-        content: '"';
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        font-size: 120px;
-        color: rgba(255, 107, 53, 0.05);
-        font-family: Georgia, serif;
-        line-height: 1;
-        z-index: 0;
-    }
-    
-    .testimonial-card > * {
-        position: relative;
-        z-index: 1;
-    }
-    
-    /* Newsletter Form */
-    #newsletterForm .form-control {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-    
-    #newsletterForm .btn {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-    
-    /* Responsive Adjustments */
+
+    /* Responsive */
     @media (max-width: 768px) {
-        .hero-section {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-        }
-        
-        .display-4 {
-            font-size: 2.2rem;
-        }
-        
-        .lead {
-            font-size: 1.1rem;
-        }
-        
-        .card {
-            margin-bottom: 1rem;
-        }
-        
-        .tiffin-card .btn {
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-        }
+        .display-3 { font-size: 2rem; }
+        .lead { font-size: 1rem; }
+        .cta-section { text-align: center; }
+        .cta-section .col-lg-4 { text-align: center !important; margin-top: 20px; }
     }
-    
+
     @media (max-width: 576px) {
-        .step-number {
-            width: 50px;
-            height: 50px;
-            font-size: 20px;
-        }
-        
-        .fa-3x {
-            font-size: 2rem;
-        }
-        
-        .card.p-5 {
-            padding: 2rem !important;
-        }
-    }
-    
-    /* Animation Classes */
-    .fade-in {
-        animation: fadeIn 0.8s ease-out;
-    }
-    
-    .slide-in {
-        animation: slideIn 0.6s ease-out;
-    }
-    
-    .bg-gradient-to-top {
-        background: linear-gradient(to top, var(--tw-gradient-from), var(--tw-gradient-to));
-    }
-    
-    .from-black\/30 {
-        --tw-gradient-from: rgba(0, 0, 0, 0.3);
-        --tw-gradient-to: rgba(0, 0, 0, 0);
-    }
-    
-    .opacity-90 {
-        opacity: 0.9;
-    }
-    
-    .opacity-10 {
-        opacity: 0.1;
-    }
-    
-    .z-1 {
-        z-index: 1;
-    }
-    
-    .position-relative.z-1 {
-        position: relative;
-        z-index: 1;
+        .display-3 { font-size: 1.5rem; }
+        .meal-image-wrapper { height: 150px; }
     }
 </style>
 {% endblock %}
@@ -762,7 +564,6 @@
 <script>
 /* ===== ADD TO CART FUNCTIONALITY ===== */
 document.addEventListener('DOMContentLoaded', function() {
-    // Add event listeners to all add-to-cart buttons
     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
         button.addEventListener('click', function() {
             const tiffinId = this.getAttribute('data-tiffin-id');
@@ -772,103 +573,123 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function addToCart(tiffinId, buttonElement) {
-    // Show loading state
     const originalText = buttonElement.innerHTML;
     buttonElement.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Adding...';
     buttonElement.disabled = true;
     
-    // CSRF token
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    // Get CSRF token from cookie or meta tag
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                      getCookie('csrftoken') || '';
     
-    // Make API call
+    if (!csrfToken) {
+        console.error('CSRF token not found');
+        buttonElement.innerHTML = originalText;
+        buttonElement.disabled = false;
+        showError('Security token missing. Please refresh the page.');
+        return;
+    }
+    
     fetch(`/orders/add-to-cart/${tiffinId}/`, {
         method: 'POST',
         headers: {
             'X-CSRFToken': csrfToken,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({})
+        credentials: 'same-origin',
+        body: JSON.stringify({
+            'quantity': 1
+        })
     })
     .then(response => {
+        if (response.status === 403) {
+            throw new Error('Permission denied. Please log in again.');
+        }
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
     })
     .then(data => {
         if (data.success) {
-            // Success state
             buttonElement.innerHTML = '<i class="fas fa-check me-1"></i> Added!';
-            buttonElement.classList.remove('btn-primary');
-            buttonElement.classList.add('btn-success');
+            buttonElement.style.backgroundColor = '#28a745';
             
-            // Show success toast
             Toastify({
-                text: "🎉 Added to cart successfully!",
+                text: "🎉 Added to cart!",
                 duration: 3000,
                 gravity: "top",
                 position: "right",
-                backgroundColor: "linear-gradient(135deg, var(--primary), var(--primary-light))",
-                className: "shadow-sm",
+                backgroundColor: "#28a745",
+                className: "shadow",
                 stopOnFocus: true
             }).showToast();
             
-            // Update cart count
-            updateCartCount(data.cart_count);
+            // Update cart count if exists
+            updateCartCount();
             
-            // Reset button after 2 seconds
             setTimeout(() => {
                 buttonElement.innerHTML = originalText;
-                buttonElement.classList.remove('btn-success');
-                buttonElement.classList.add('btn-primary');
+                buttonElement.style.backgroundColor = '';
                 buttonElement.disabled = false;
             }, 2000);
         } else {
-            // Error state
-            buttonElement.innerHTML = originalText;
-            buttonElement.disabled = false;
-            
-            Toastify({
-                text: data.error || "❌ Error adding to cart",
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(135deg, var(--danger), #FB7185)",
-                className: "shadow-sm",
-                stopOnFocus: true
-            }).showToast();
+            throw new Error(data.message || 'Failed to add to cart');
         }
     })
     .catch(error => {
         console.error('Error:', error);
         buttonElement.innerHTML = originalText;
         buttonElement.disabled = false;
-        
-        Toastify({
-            text: "❌ Network error. Please try again.",
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-            backgroundColor: "linear-gradient(135deg, var(--danger), #FB7185)",
-            className: "shadow-sm",
-            stopOnFocus: true
-        }).showToast();
+        showError(error.message || 'Error adding to cart');
     });
 }
 
-function updateCartCount(count) {
-    const cartBadge = document.querySelector('.navbar .badge.bg-primary');
-    if (cartBadge) {
-        // Add animation
-        cartBadge.classList.add('animate__animated', 'animate__bounceIn');
-        
-        // Update count
-        setTimeout(() => {
-            cartBadge.textContent = count;
-            setTimeout(() => {
-                cartBadge.classList.remove('animate__animated', 'animate__bounceIn');
-            }, 500);
-        }, 100);
+// Get CSRF token from cookie
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Show error toast
+function showError(message) {
+    Toastify({
+        text: "❌ " + message,
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#dc3545",
+        className: "shadow",
+        stopOnFocus: true
+    }).showToast();
+}
+
+// Update cart count
+function updateCartCount() {
+    const cartCount = document.querySelector('[data-cart-count]');
+    if (cartCount) {
+        fetch('/orders/cart-count/', {
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.count) {
+                cartCount.textContent = data.count;
+                cartCount.style.display = 'block';
+            }
+        })
+        .catch(error => console.error('Error updating cart count:', error));
     }
 }
 
@@ -876,35 +697,41 @@ function updateCartCount(count) {
 document.getElementById('newsletterForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCookie('csrftoken');
     const emailInput = this.querySelector('input[type="email"]');
-    const email = emailInput.value.trim();
     
-    if (!validateEmail(email)) {
-        Toastify({
-            text: "❌ Please enter a valid email address",
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-            backgroundColor: "linear-gradient(135deg, var(--danger), #FB7185)",
-            className: "shadow-sm",
-            stopOnFocus: true
-        }).showToast();
-        return;
-    }
-    
-    // Show success message
-    Toastify({
-        text: "✅ Subscribed successfully! Check your email for confirmation.",
-        duration: 4000,
-        gravity: "top",
-        position: "right",
-        backgroundColor: "linear-gradient(135deg, var(--success), #34D399)",
-        className: "shadow-sm",
-        stopOnFocus: true
-    }).showToast();
-    
-    // Reset form
-    this.reset();
+    fetch('/newsletter/subscribe/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+            'email': emailInput.value
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Toastify({
+                text: "✅ Subscribed successfully!",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#2ecc71",
+                className: "shadow",
+                stopOnFocus: true
+            }).showToast();
+            this.reset();
+        } else {
+            showError(data.message || 'Subscription failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showError('Error subscribing to newsletter');
+    });
 });
 
 /* ===== SCROLL ANIMATIONS ===== */
@@ -921,29 +748,11 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe elements for scroll animations
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.card, .text-center').forEach(el => {
+    document.querySelectorAll('.meal-card, .step-box, .testimonial-card').forEach(el => {
         observer.observe(el);
     });
 });
-
-/* ===== LAZY LOADING IMAGES ===== */
-if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.add('loaded');
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-    
-    document.querySelectorAll('img[data-src]').forEach(img => {
-        imageObserver.observe(img);
-    });
-}
 </script>
+
 {% endblock %}

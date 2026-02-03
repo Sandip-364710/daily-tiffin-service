@@ -1,245 +1,200 @@
 {% load static %}
-{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login – Tiffin Service</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <style>
-    /* 🔹 FULL SCREEN BACKGROUND IMAGE */
-    body {
-  min-height: 100vh;
-  /* તમારી Gujarati Thali image નું સાચું path */
-  background-image: url('/static/Gujrati.png');
-  background-size: cover;         /* આખી screenમાં fit કરવા */
-  background-position: center;    /* image centerમાં રાખવા */
-  background-repeat: no-repeat;   /* repeat ન થાય */
-  background-attachment: fixed;   /* scroll કરતાં પણ fix રહે */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Poppins', sans-serif;
-  position: relative;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login – Tiffin Service</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-/* overlay add કરવા હોય તો */
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4); /* થોડું dark overlay */
-  z-index: 0;
-}
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+        }
 
-/* form-container ને overlay ઉપર લાવવા */
-.form-container {
-  position: relative;
-  z-index: 1;
-}
+        .login-page-wrapper {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
 
+        /* 🔹 LEFT SIDE: FORM AREA */
+        .form-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background-color: #ffffff;
+        }
 
-    /* Glass Card */
-    .login-card {
-      position: relative;
-      z-index: 1; /* above overlay */
-      width: 100%;
-      max-width: 420px;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border-radius: 20px;
-      padding: 2rem;
-      color: #fff;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      animation: fadeIn 0.6s ease-in-out;
-    }
+        /* 🔹 RIGHT SIDE: FAMILY IMAGE AREA */
+        .image-area {
+            flex: 1.2;
+            background-image: url('{% static "img/login.png" %}'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
 
-    @keyframes fadeIn {
-      0% {opacity: 0; transform: translateY(-10px);}
-      100% {opacity: 1; transform: translateY(0);}
-    }
+        /* હળવું ડાર્ક લેયર જેથી ઈમેજ વધુ પ્રોફેશનલ લાગે */
+        .image-area::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.03);
+        }
 
-    .login-card h2 {
-      font-weight: 700;
-      font-size: 1.8rem;
-      text-align: center;
-      margin-bottom: 0.5rem;
-    }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+        }
 
-    .login-card .subtitle {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #f1f1f1;
-      margin-bottom: 1.5rem;
-    }
+        .login-container h1 {
+            font-weight: 700;
+            font-size: 2.8rem;
+            color: #222;
+            margin-bottom: 8px;
+        }
 
-    /* Form fields */
-    .form-control {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.25);
-      color: #fff;
-      border-radius: 12px;
-      padding-left: 2.5rem;
-      transition: all 0.3s ease;
-    }
-    .form-control::placeholder {
-      color: #eee;
-    }
-    .form-control:focus {
-      background: rgba(255,255,255,0.2);
-      border-color: #fff;
-      box-shadow: 0 0 0 .2rem rgba(255,255,255,0.1);
-    }
+        .subtitle {
+            color: #777;
+            margin-bottom: 35px;
+            font-size: 1.1rem;
+        }
 
-    /* Icons inside inputs */
-    .icon-field {
-      position: relative;
-    }
-    .icon-field i {
-      position: absolute;
-      top: 50%;
-      left: 12px;
-      transform: translateY(-50%);
-      color: #eee;
-    }
+        .custom-input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
 
-    /* Button */
-    .btn-glass {
-      background: linear-gradient(135deg, #ff6b6b, #ffa15e);
-      border: none;
-      color: #fff;
-      border-radius: 12px;
-      font-weight: 600;
-      transition: transform 0.2s ease;
-    }
-    .btn-glass:hover {
-      transform: translateY(-2px);
-    }
+        .custom-input-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff6b6b; /* સોફ્ટ રેડ કલર */
+            font-size: 1.1rem;
+            z-index: 5;
+        }
 
-    /* Bottom link */
-    .bottom-link {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
-    .bottom-link a {
-      color: #fff;
-      text-decoration: underline;
-    }
+        .form-control {
+            height: 58px;
+            padding-left: 55px;
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+            background-color: #fcfcfc;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
 
-    /* Toast styling */
-    .toast-custom {
-      background-color: rgba(220,53,69,.9);
-      color: #fff;
-    }
-  </style>
+        .form-control:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+            background-color: #fff;
+        }
+
+        .btn-login-now {
+            height: 58px;
+            background: #ff7675; /* તમારી ઈમેજ મુજબનો બટન કલર */
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+            border-radius: 15px;
+            margin-top: 25px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .btn-login-now:hover {
+            background: #ee5253;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(255, 118, 117, 0.25);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .forgot-pass {
+            color: #ff7675;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .signup-section {
+            text-align: center;
+            margin-top: 35px;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .signup-section a {
+            color: #ff7675;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .image-area { display: none; }
+            .form-area { flex: 1; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Toast for errors -->
+<div class="login-page-wrapper">
+    <div class="form-area">
+        <div class="login-container">
+            <h1>Login</h1>
+            <p class="subtitle">Welcome back! Please enter your details.</p>
 
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="custom-input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="text" name="username" class="form-control" placeholder="Email or Username" required>
+                </div>
 
+                <div class="custom-input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+                </div>
 
-<div class="login-card">
-  <h2>Welcome Back</h2>
-  <div class="subtitle">Sign in to continue your tiffin journey</div>
+                <div class="remember-forgot">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe" style="font-size: 0.95rem; color: #666;">
+                            Remember me
+                        </label>
+                    </div>
+                    <a href="#" class="forgot-pass">Forgot Password?</a>
+                </div>
 
-  <form method="post" novalidate>
-    {% csrf_token %}
-    <div class="mb-3 icon-field">
-      <i class="fas fa-user"></i>
-      <input type="text" id="id_username" name="username" class="form-control" placeholder="Username" value="{{ form.username.value|default:'' }}" required>
+                <button type="submit" class="btn btn-login-now">Login Now</button>
+            </form>
+
+            <p class="signup-section">
+                Don't have an account? <a href="{% url 'signup' %}">Sign up for free</a>
+            </p>
+        </div>
     </div>
 
-    <div class="mb-3 icon-field">
-      <i class="fas fa-lock"></i>
-      <input type="password" id="id_password" name="password" class="form-control" placeholder="Password" required>
-    </div>
-
-    <div class="form-check mb-3">
-      <input class="form-check-input" type="checkbox" value="on" id="remember" name="remember">
-      <label class="form-check-label" for="remember">Remember me</label>
-    </div>
-
-    <button type="submit" class="btn btn-glass w-100">
-      <i class="fas fa-sign-in-alt"></i> Login
-    </button>
-  </form>
-
-  <div class="bottom-link">
-    Don’t have an account? <a href="{% url 'signup' %}">Sign up</a>
-  </div>
+    <div class="image-area"></div>
 </div>
 
-  <!-- Hidden container to hold Django messages safely for JS -->
-  <div id="dj-toast-messages" style="display:none;">
-    {% if messages %}
-      {% for message in messages %}
-        <span class="dj-message" data-text="{{ message|escape }}" data-level="{{ message.tags|default:'info' }}"></span>
-      {% endfor %}
-    {% endif %}
-  </div>
-
-  <!-- Hidden container to hold Django form errors safely for JS -->
-  <div id="dj-form-errors" style="display:none;">
-    {% if form and form.errors %}
-      {% for field, errors in form.errors.items %}
-        {% for error in errors %}
-          <span class="dj-error" data-text="{{ field|title }}: {{ error|escape }}"></span>
-        {% endfor %}
-      {% endfor %}
-      {% for err in form.non_field_errors %}
-        <span class="dj-error" data-text="{{ err|escape }}"></span>
-      {% endfor %}
-    {% endif %}
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script>
-    (function () {
-      var nodes = document.querySelectorAll('#dj-toast-messages .dj-message');
-      nodes.forEach(function (n) {
-        var txt = n.getAttribute('data-text');
-        var level = (n.getAttribute('data-level') || 'info').toLowerCase();
-        if (!txt) return;
-
-        var bg = "linear-gradient(to left, black, chocolate)"; // default
-        if (level.indexOf('success') !== -1) bg = "linear-gradient(to left, black, chocolate)";      // green
-        else if (level.indexOf('warning') !== -1) bg = "#ffc107"; // yellow
-        else if (level.indexOf('error') !== -1) bg = "#dc3545";   // red
-        else if (level.indexOf('info') !== -1) bg = "#0dcaf0";    // cyan
-
-        Toastify({
-          text: txt,
-          className: level,
-          position: "right",
-          gravity: "top",
-          style: { background: bg, color: (level.indexOf('warning') !== -1 ? "#000" : "#fff") }
-        }).showToast();
-      });
-
-      // Show form validation errors as error toasts
-      var errs = document.querySelectorAll('#dj-form-errors .dj-error');
-      errs.forEach(function (n) {
-        var txt = n.getAttribute('data-text');
-        if (!txt) return;
-        Toastify({
-          text: txt,
-          className: "error",
-          position: "right",
-          gravity: "top",
-          style: { background: "#dc3545" }
-        }).showToast();
-      });
-    })();
-  </script>
-  </body>
-  </html>
+</body>
+</html>
