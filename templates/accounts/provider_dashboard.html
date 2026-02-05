@@ -520,6 +520,13 @@
                             </a>
                         {% endif %}
                     </div>
+                     {% if provider_profile %}
+                        <div class="alert alert-info mb-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Approval Required:</strong> Your menu items need admin approval before they appear to customers. 
+                            Unapproved items are only visible to you.
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -648,14 +655,6 @@
                     <h5 class="section-title">
                         <i class="fas fa-utensils"></i> Menu Items
                     </h5>
-                    
-                    {% if provider_profile %}
-                        <div class="alert alert-info mb-3">
-                            <i class="fas fa-info-circle me-2"></i>
-                            <strong>Approval Required:</strong> Your menu items need admin approval before they appear to customers. 
-                            Unapproved items are only visible to you.
-                        </div>
-                    {% endif %}
                     
                     {% if provider_tiffins %}
                         {% for tiffin in provider_tiffins %}
