@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 
 {% block title %}{{ tiffin.name }} - Tiffin Service{% endblock %}
 
@@ -65,20 +66,26 @@
                 </div>
                 <div class="card-body">
                     {% if user.is_authenticated and user.user_type == 'customer' %}
-                        <form method="post" action="{% url 'add_review' tiffin.pk %}" class="mb-4">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{ review_form.rating }}
+                        {% if not user_has_reviewed %}
+                            <form method="post" action="{% url 'add_review' tiffin.pk %}" class="mb-4">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        {{ review_form.rating }}
+                                    </div>
+                                    <div class="col-md-7">
+                                        {{ review_form.comment }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-primary">Add Review</button>
+                                    </div>
                                 </div>
-                                <div class="col-md-7">
-                                    {{ review_form.comment }}
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="submit" class="btn btn-primary">Add Review</button>
-                                </div>
+                            </form>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>You have already reviewed this tiffin service.
                             </div>
-                        </form>
+                        {% endif %}
                     {% endif %}
                     
                     {% for review in reviews %}
@@ -124,9 +131,24 @@
                     </div>
                     
                     <div class="mb-3">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between align-items-center">
                             <span>Rating:</span>
-                            <span>{% if avg_rating %}{{ avg_rating|floatformat:1 }}{% else %}0.0{% endif %}/5</span>
+                            <div>
+                                {% if tiffin.provider.rating > 0 %}
+                                    <span class="text-warning">
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= tiffin.provider.rating %}
+                                                <i class="fas fa-star"></i>
+                                            {% else %}
+                                                <i class="far fa-star"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </span>
+                                    <span class="ms-1">{{ tiffin.provider.rating }}/5</span>
+                                {% else %}
+                                    <span class="text-muted">No ratings yet</span>
+                                {% endif %}
+                            </div>
                         </div>
                         <!-- <div class="d-flex justify-content-between">
                             <span>Total Orders:</span>

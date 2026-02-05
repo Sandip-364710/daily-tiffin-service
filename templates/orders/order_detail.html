@@ -1,175 +1,499 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 
 {% block title %}Order #{{ order.order_number }} - Tiffin Service{% endblock %}
 
 {% block content %}
 <div class="container py-5">
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-12">
-            <h1 class="mb-4">
-                <i class="fas fa-receipt text-primary"></i> 
-                Order #{{ order.order_number }}
-            </h1>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5>Order Details</h5>
-                    <div>
-                        <span class="badge 
-                            {% if order.status == 'pending' %}bg-warning
-                            {% elif order.status == 'confirmed' %}bg-info
-                            {% elif order.status == 'preparing' %}bg-primary
-                            {% elif order.status == 'ready' %}bg-success
-                            {% elif order.status == 'delivered' %}bg-success
-                            {% else %}bg-danger
-                            {% endif %} fs-6">
-                            {{ order.get_status_display }}
-                        </span>
-                    </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="mb-2">
+                        <i class="fas fa-receipt text-primary me-3"></i> 
+                        Order #{{ order.order_number }}
+                    </h1>
+                    <p class="text-muted mb-0">Order placed on {{ order.created_at|date:"M d, Y - H:i" }}</p>
                 </div>
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h6>Order Information</h6>
-                            <p><strong>Order Date:</strong> {{ order.created_at|date:"M d, Y - H:i" }}</p>
-                            {% if user.user_type == 'customer' %}
-                                <p><strong>Provider:</strong> {{ order.provider.business_name }}</p>
-                            {% else %}
-                                <p><strong>Customer:</strong> {{ order.customer.username }}</p>
-                                <p><strong>Customer Phone:</strong> {{ order.delivery_phone }}</p>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Delivery Information</h6>
-                            <p><strong>Address:</strong> {{ order.delivery_address }}</p>
-                            <p><strong>Date & Time:</strong> {{ order.delivery_date }} at {{ order.delivery_time }}</p>
-                            <p><strong>Phone:</strong> {{ order.delivery_phone }}</p>
-                        </div>
-                    </div>
-
-                    <h6>Order Items</h6>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in order.items.all %}
-                                <tr>
-                                    <td>{{ item.tiffin_service.name }}</td>
-                                    <td>₹{{ item.price }}</td>
-                                    <td>{{ item.quantity }}</td>
-                                    <td>₹{{ item.total_price }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {% if order.special_instructions %}
-                    <div class="mt-4">
-                        <h6>Special Instructions</h6>
-                        <p class="bg-light p-3 rounded">{{ order.special_instructions }}</p>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Order Summary</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Subtotal:</span>
-                        <span>₹{{ order.subtotal }}</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Delivery Charge:</span>
-                        <span>₹{{ order.delivery_charge }}</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between mb-3">
-                        <strong>Total:</strong>
-                        <strong>₹{{ order.total_amount }}</strong>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <span class="badge 
-                        {% if order.status == 'pending' %}bg-warning
+                <div class="text-end">
+                    <span class="badge 
+                        {% if order.status == 'pending' %}bg-warning text-dark
                         {% elif order.status == 'confirmed' %}bg-info
                         {% elif order.status == 'preparing' %}bg-primary
                         {% elif order.status == 'ready' %}bg-success
                         {% elif order.status == 'delivered' %}bg-success
                         {% else %}bg-danger
-                        {% endif %} fs-6">
+                        {% endif %} px-4 py-2 fs-6">
+                        <i class="fas fa-circle me-2" style="font-size: 8px;"></i>
                         {{ order.get_status_display }}
                     </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Main Order Details -->
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-4">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle text-primary me-2"></i>
+                        Order Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Customer/Provider Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-3 mb-3">
+                                <label class="text-muted small d-block mb-2">
+                                    {% if user.user_type == 'customer' %}
+                                        <i class="fas fa-store me-1"></i>Provider
+                                    {% else %}
+                                        <i class="fas fa-user me-1"></i>Customer
+                                    {% endif %}
+                                </label>
+                                <div class="fw-semibold">
+                                    {% if user.user_type == 'customer' %}
+                                        {{ order.provider.business_name }}
+                                    {% else %}
+                                        {{ order.customer.username }}
+                                        <br><small class="text-muted">{{ order.delivery_phone }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-3 mb-3">
+                                <label class="text-muted small d-block mb-2">
+                                    <i class="fas fa-truck me-1"></i>Delivery Information
+                                </label>
+                                <div class="fw-semibold">
+                                    <div class="mb-1">
+                                        <i class="far fa-calendar me-2 text-primary"></i>{{ order.delivery_date }}
+                                    </div>
+                                    <div>
+                                        <i class="far fa-clock me-2 text-primary"></i>{{ order.delivery_time }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    {% if user.user_type == 'provider' and order.status != 'delivered' and order.status != 'cancelled' %}
-                    <div class="mt-3">
-                        <h6>Update Status</h6>
-                        <select class="form-select" onchange="updateOrderStatus({{ order.id }}, this.value)">
-                            <option value="">Select Status</option>
-                            {% if order.status == 'pending' %}
-                                <option value="confirmed">Confirm Order</option>
-                                <option value="cancelled">Cancel Order</option>
-                            {% elif order.status == 'confirmed' %}
-                                <option value="preparing">Start Preparing</option>
-                            {% elif order.status == 'preparing' %}
-                                <option value="ready">Mark Ready</option>
-                            {% elif order.status == 'ready' %}
-                                <option value="delivered">Mark Delivered</option>
-                            {% endif %}
-                        </select>
+                    <!-- Delivery Address -->
+                    <div class="mb-4">
+                        <label class="text-muted small d-block mb-2">
+                            <i class="fas fa-map-marker-alt me-1"></i>Delivery Address
+                        </label>
+                        <div class="bg-light rounded p-3">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-home text-primary me-3 mt-1"></i>
+                                <span class="text-secondary">{{ order.delivery_address }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Items -->
+                    <div class="mb-4">
+                        <label class="text-muted small d-block mb-3">
+                            <i class="fas fa-utensils me-1"></i>Order Items
+                        </label>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="border-0">Item</th>
+                                        <th class="border-0 text-center">Quantity</th>
+                                        <th class="border-0 text-end">Price</th>
+                                        <th class="border-0 text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order.items.all %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-primary bg-opacity-10 rounded p-2 me-3">
+                                                    <i class="fas fa-utensils text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-semibold">{{ item.tiffin_service.name }}</div>
+                                                    <small class="text-muted">{{ item.tiffin_service.provider.business_name }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-light text-dark px-3 py-2">{{ item.quantity }}</span>
+                                        </td>
+                                        <td class="text-end">₹{{ item.price }}</td>
+                                        <td class="text-end fw-semibold text-primary">₹{{ item.total_price }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Special Instructions -->
+                    {% if order.special_instructions %}
+                    <div class="mb-4">
+                        <label class="text-muted small d-block mb-2">
+                            <i class="fas fa-sticky-note me-1"></i>Special Instructions
+                        </label>
+                        <div class="bg-warning bg-opacity-10 border-start border-3 border-warning ps-3 py-2">
+                            <small class="text-secondary">{{ order.special_instructions }}</small>
+                        </div>
                     </div>
                     {% endif %}
                 </div>
             </div>
+        </div>
+
+        <!-- Order Summary & Actions -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-4">
+                    <h5 class="mb-0">
+                        <i class="fas fa-calculator text-primary me-2"></i>
+                        Order Summary
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Price Breakdown -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Subtotal</span>
+                            <span>₹{{ order.subtotal }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Delivery Charge</span>
+                            <span>₹{{ order.delivery_charge }}</span>
+                        </div>
+                        <hr class="my-3">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="fw-bold fs-5">Total Amount</span>
+                            <span class="fw-bold fs-5 text-primary">₹{{ order.total_amount }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Status Badge -->
+                    <div class="text-center mb-4">
+                        <span class="badge 
+                            {% if order.status == 'pending' %}bg-warning text-dark
+                            {% elif order.status == 'confirmed' %}bg-info
+                            {% elif order.status == 'preparing' %}bg-primary
+                            {% elif order.status == 'ready' %}bg-success
+                            {% elif order.status == 'delivered' %}bg-success
+                            {% else %}bg-danger
+                            {% endif %} px-4 py-2">
+                            <i class="fas fa-circle me-2" style="font-size: 8px;"></i>
+                            {{ order.get_status_display }}
+                        </span>
+                    </div>
+
+                    <!-- Status Update for Providers -->
+                    {% if user.user_type == 'provider' and order.status != 'delivered' and order.status != 'cancelled' %}
+                    <div class="border-top pt-4">
+                        <label class="text-muted small d-block mb-3">
+                            <i class="fas fa-sync-alt me-1"></i>Update Order Status
+                        </label>
+                        <select class="form-select mb-3" onchange="updateOrderStatus('{{ order.id }}', this.value)">
+                            <option value="">Choose Status</option>
+                            {% if order.status == 'pending' %}
+                                <option value="confirmed">✓ Confirm Order</option>
+                                <option value="cancelled">✗ Cancel Order</option>
+                            {% elif order.status == 'confirmed' %}
+                                <option value="preparing">🍳 Start Preparing</option>
+                            {% elif order.status == 'preparing' %}
+                                <option value="ready">📦 Mark Ready</option>
+                            {% elif order.status == 'ready' %}
+                                <option value="delivered">🚚 Mark Delivered</option>
+                            {% endif %}
+                        </select>
+                        <small class="text-muted">Status will update immediately</small>
+                    </div>
+                    {% endif %}
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 mt-4">
+                        {% if user.user_type == 'customer' and order.status == 'pending' or order.status == 'confirmed' or order.status == 'preparing' %}
+                            <button class="btn btn-outline-danger">
+                                <i class="fas fa-times me-2"></i>Cancel Order
+                            </button>
+                        {% endif %}
+                        
+                        {% if order.status == 'delivered' %}
+                            {% if not order.review %}
+                                <!-- Rating Form -->
+                                <div class="mb-3">
+                                    <button class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#ratingModal">
+                                        <i class="fas fa-star me-2"></i>Rate This Order
+                                    </button>
+                                </div>
+                            {% else %}
+                                <!-- Existing Review Display -->
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Your Review</h6>
+                                        <div class="mb-2">
+                                            <span class="text-warning">
+                                                {% for i in "12345" %}
+                                                    {% if forloop.counter <= order.review.overall_rating %}
+                                                        <i class="fas fa-star"></i>
+                                                    {% else %}
+                                                        <i class="far fa-star"></i>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </span>
+                                            <span class="ms-2">{{ order.review.overall_rating }}/5</span>
+                                        </div>
+                                        {% if order.review.comment %}
+                                            <p class="card-text small mb-0">{{ order.review.comment }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        
+                        <a href="{% url 'order_history' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Orders
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Rating Modal -->
+<div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ratingModalLabel">
+                    <i class="fas fa-star text-warning me-2"></i>Rate Your Order
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="ratingForm" method="POST" action="{% url 'submit_review' order.id %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <!-- Food Quality Rating -->
+                    <div class="mb-4">
+                        <label class="form-label">Food Quality</label>
+                        <div class="d-flex gap-1" id="foodQualityStars">
+                            {% for i in "12345" %}
+                                <button type="button" class="btn btn-link p-0 star-rating" data-rating="{{ i }}" data-field="food_quality_rating">
+                                    <i class="far fa-star fa-2x text-warning"></i>
+                                </button>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" name="food_quality_rating" id="food_quality_rating" required>
+                    </div>
+                    
+                    <!-- Delivery Rating -->
+                    <div class="mb-4">
+                        <label class="form-label">Delivery Service</label>
+                        <div class="d-flex gap-1" id="deliveryStars">
+                            {% for i in "12345" %}
+                                <button type="button" class="btn btn-link p-0 star-rating" data-rating="{{ i }}" data-field="delivery_rating">
+                                    <i class="far fa-star fa-2x text-warning"></i>
+                                </button>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" name="delivery_rating" id="delivery_rating" required>
+                    </div>
+                    
+                    <!-- Overall Rating -->
+                    <div class="mb-4">
+                        <label class="form-label">Overall Experience</label>
+                        <div class="d-flex gap-1" id="overallStars">
+                            {% for i in "12345" %}
+                                <button type="button" class="btn btn-link p-0 star-rating" data-rating="{{ i }}" data-field="overall_rating">
+                                    <i class="far fa-star fa-2x text-warning"></i>
+                                </button>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" name="overall_rating" id="overall_rating" required>
+                    </div>
+                    
+                    <!-- Comment -->
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Additional Comments (Optional)</label>
+                        <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Share your experience..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Review
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+{% csrf_token %}
 <script>
+// Star Rating Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const starButtons = document.querySelectorAll('.star-rating');
+    
+    starButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const rating = this.dataset.rating;
+            const field = this.dataset.field;
+            const starsContainer = this.parentElement;
+            
+            // Update hidden input
+            document.getElementById(field).value = rating;
+            
+            // Update star display
+            const stars = starsContainer.querySelectorAll('.star-rating i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                }
+            });
+        });
+    });
+});
+
+// Handle rating form submission
+document.getElementById('ratingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Toastify({
+                text: data.message || 'Review submitted successfully!',
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#20C997",
+                stopOnFocus: true
+            }).showToast();
+            
+            // Close modal and reload page after a short delay
+            const modal = bootstrap.Modal.getInstance(document.getElementById('ratingModal'));
+            modal.hide();
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            Toastify({
+                text: data.error || "Error submitting review",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#EF476F",
+                stopOnFocus: true
+            }).showToast();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Toastify({
+            text: "Error submitting review. Please try again.",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#EF476F",
+            stopOnFocus: true
+        }).showToast();
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    });
+});
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 function updateOrderStatus(orderId, newStatus) {
     if (!newStatus) return;
     
-    if (confirm('Are you sure you want to update the order status?')) {
-        fetch(`/orders/update-status/${orderId}/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `status=${newStatus}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Error updating status');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error updating status');
-        });
-    }
+    fetch(`/orders/update-status/${orderId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `status=${newStatus}`
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            Toastify({
+                text: "Order status updated successfully!",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#20C997",
+                stopOnFocus: true
+            }).showToast();
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            Toastify({
+                text: data.error || "Error updating status",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#EF476F",
+                stopOnFocus: true
+            }).showToast();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Toastify({
+            text: "Error updating status. Please try again.",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#EF476F",
+            stopOnFocus: true
+        }).showToast();
+    });
 }
 </script>
 {% endblock %}

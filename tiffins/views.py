@@ -103,7 +103,11 @@ def tiffin_detail(request, pk):
     }
     
     if request.user.is_authenticated and request.user.user_type == 'customer':
-        context['review_form'] = ReviewForm()
+        # Check if user has already reviewed this tiffin
+        user_has_reviewed = reviews.filter(customer=request.user).exists()
+        if not user_has_reviewed:
+            context['review_form'] = ReviewForm()
+        context['user_has_reviewed'] = user_has_reviewed
     
     return render(request, 'tiffins/tiffin_detail.html', context)
 
@@ -121,8 +125,14 @@ def add_review(request, pk):
             review = form.save(commit=False)
             review.tiffin_service = tiffin
             review.customer = request.user
-            review.save()
-            messages.success(request, 'Review added successfully!')
+            try:
+                review.save()
+                messages.success(request, 'Review added successfully!')
+            except Exception as e:
+                if 'Duplicate entry' in str(e):
+                    messages.warning(request, 'You have already reviewed this tiffin service.')
+                else:
+                    messages.error(request, 'Error adding review. Please try again.')
     
     return redirect('tiffin_detail', pk=pk)
 

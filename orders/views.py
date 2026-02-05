@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse, HttpResponseForbidden
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView
-from .models import Order, OrderItem
+from .models import Order, OrderItem, OrderReview
 from tiffins.models import TiffinService
 from .forms import OrderForm
 from decimal import Decimal
@@ -448,6 +448,62 @@ def update_order_status(request, order_id):
             order.save()
             return JsonResponse({'success': True})
         else:
-            return JsonResponse({'error': 'Invalid status'}, status=400)
-    except:
-        return JsonResponse({'error': 'Order not found'}, status=404)
+            return JsonResponse({'error': f'Invalid status: {new_status}'}, status=400)
+    except Order.DoesNotExist:
+        return JsonResponse({'error': 'Order not found or you do not have permission to update it'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)
+
+@login_required
+@require_POST
+def submit_review(request, order_id):
+    """Handle review submission for delivered orders"""
+    if request.user.user_type != 'customer':
+        return JsonResponse({'error': 'Only customers can submit reviews'}, status=403)
+    
+    order = get_object_or_404(Order, id=order_id, customer=request.user)
+    
+    # Check if order is delivered
+    if order.status != 'delivered':
+        return JsonResponse({'error': 'You can only review delivered orders'}, status=400)
+    
+    # Check if review already exists
+    if OrderReview.objects.filter(order=order).exists():
+        return JsonResponse({'error': 'You have already reviewed this order'}, status=400)
+    
+    try:
+        # Get rating data
+        food_quality_rating = int(request.POST.get('food_quality_rating'))
+        delivery_rating = int(request.POST.get('delivery_rating'))
+        overall_rating = int(request.POST.get('overall_rating'))
+        comment = request.POST.get('comment', '').strip()
+        
+        # Validate ratings
+        for rating in [food_quality_rating, delivery_rating, overall_rating]:
+            if not 1 <= rating <= 5:
+                return JsonResponse({'error': 'Ratings must be between 1 and 5'}, status=400)
+        
+        # Create review
+        review = OrderReview.objects.create(
+            order=order,
+            customer=request.user,
+            provider=order.provider,
+            food_quality_rating=food_quality_rating,
+            delivery_rating=delivery_rating,
+            overall_rating=overall_rating,
+            comment=comment
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Thank you for your review!',
+            'review': {
+                'overall_rating': review.overall_rating,
+                'comment': review.comment
+            }
+        })
+        
+    except (ValueError, TypeError) as e:
+        return JsonResponse({'error': 'Invalid rating values'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)

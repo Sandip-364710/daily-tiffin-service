@@ -14,6 +14,9 @@ urlpatterns = [
     path('detail/<int:order_id>/', views.order_detail, name='order_detail'),
     path('update-status/<int:order_id>/', views.update_order_status, name='update_order_status'),
     
+    # Reviews
+    path('submit-review/<int:order_id>/', views.submit_review, name='submit_review'),
+    
     # Delivery tracking
     path('track/<int:order_id>/', views.track_delivery, name='track_delivery'),
     path('api/update-location/<int:order_id>/', views.update_delivery_location, name='update_delivery_location'),

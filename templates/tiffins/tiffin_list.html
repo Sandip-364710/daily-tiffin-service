@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 
 {% block title %}Browse Tiffins - Tiffin Service{% endblock %}
 
@@ -70,11 +71,25 @@
                         <small class="text-muted">
                             <i class="fas fa-store"></i> {{ tiffin.provider.business_name }}
                         </small>
+                        {% if tiffin.provider.rating > 0 %}
+                            <div class="mt-1">
+                                <span class="text-warning">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= tiffin.provider.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </span>
+                                <small class="text-muted ms-1">{{ tiffin.provider.rating }}/5</small>
+                            </div>
+                        {% endif %}
                     </div>
                     
                     <div class="mb-2">
                         <small class="text-muted">
-                            <i class="fas fa-map-marker-alt"></i> {{ tiffin.provider.user.city }}
+                            <i class="fas fa-map-marker-alt"></i> {{ tiffin.provider.delivery_areas }}
                         </small>
                     </div>
                     

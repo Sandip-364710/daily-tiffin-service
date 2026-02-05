@@ -27,17 +27,24 @@ class SignUpView(CreateView):
         username = form.cleaned_data.get('username')
         messages.success(self.request, f'Account created for {username}!')
         return redirect('login')
+    
+    def form_invalid(self, form):
+        # Add error messages to show on signup page
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f'{field.title()}: {error}')
+        return self.render_to_response(self.get_context_data(form=form))
 
 class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
     redirect_authenticated_user = True
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        user = self.request.user
-        if user and user.is_authenticated:
-            messages.success(self.request, f'Login successful! Welcome {user.username}.')
-        return response
+    def form_invalid(self, form):
+        # Add error messages to show on signup page
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f'{field.title()}: {error}')
+        return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):
         next_url = self.get_redirect_url()
@@ -213,25 +220,32 @@ def provider_profile_create(request):
         messages.error(request, 'Only providers can create business profiles.')
         return redirect('dashboard')
     
-    if hasattr(request.user, 'provider_profile'):
-        messages.info(request, 'You already have a business profile.')
-        return redirect('dashboard')
+    try:
+        provider_profile = request.user.provider_profile
+        is_edit = True
+    except ProviderProfile.DoesNotExist:
+        provider_profile = None
+        is_edit = False
     
     if request.method == 'POST':
-        form = ProviderProfileForm(request.POST)
+        form = ProviderProfileForm(request.POST, instance=provider_profile)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
-            messages.success(request, 'Business profile created successfully!')
+            
+            if is_edit:
+                messages.success(request, 'Business profile updated successfully!')
+            else:
+                messages.success(request, 'Business profile created successfully!')
             return redirect('dashboard')
-        else:
-            # Show a generic error message (field-level errors also displayed as toasts)
-            messages.error(request, 'Please correct the errors below and try again.')
     else:
-        form = ProviderProfileForm()
+        form = ProviderProfileForm(instance=provider_profile)
     
-    return render(request, 'accounts/provider_profile_form.html', {'form': form})
+    return render(request, 'accounts/provider_profile_form.html', {
+        'form': form,
+        'is_edit': is_edit
+    })
 
 @login_required
 @require_POST

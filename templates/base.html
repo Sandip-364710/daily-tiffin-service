@@ -1204,16 +1204,25 @@ window.addEventListener('scroll', function() {
 /* ===== BACK TO TOP BUTTON ===== */
 const backToTopButton = document.createElement('button');
 backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
-backToTopButton.className = 'btn btn-link position-fixed d-none';
-backToTopButton.style.background = 'transparent';
-backToTopButton.style.border = 'none';
-backToTopButton.style.fontSize = '26px';
+backToTopButton.className = 'btn btn-primary position-fixed d-none rounded-circle shadow-lg';
 backToTopButton.style.width = '55px';
 backToTopButton.style.height = '55px';
 backToTopButton.style.bottom = '25px';
 backToTopButton.style.right = '25px';
 backToTopButton.style.zIndex = '9999';
 backToTopButton.style.cursor = 'pointer';
+backToTopButton.style.transition = 'all 0.3s ease';
+backToTopButton.style.opacity = '0.9';
+
+backToTopButton.onmouseover = () => {
+    backToTopButton.style.opacity = '1';
+    backToTopButton.style.transform = 'scale(1.1)';
+};
+
+backToTopButton.onmouseout = () => {
+    backToTopButton.style.opacity = '0.9';
+    backToTopButton.style.transform = 'scale(1)';
+};
 
 backToTopButton.onclick = () =>
   window.scrollTo({ top: 0, behavior: 'smooth' });

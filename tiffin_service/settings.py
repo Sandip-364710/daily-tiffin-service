@@ -63,26 +63,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tiffin_service.wsgi.application'
 
-# Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': config('DB_NAME', default='tiffin'),
-#         'USER': config('DB_USER', default='skpatel'),
-#         'PASSWORD': config('DB_PASSWORD', default='364710'),
-#         'HOST': config('DB_HOST', default='localhost'),
-#         'PORT': config('DB_PORT', default='3306'),
-#         'OPTIONS': {
-#             'sql_mode': 'traditional',
-#         }
-#     }
-# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        "NAME": BASE_DIR / "db.sqlite3",  # BASE_DIR should be defined in your settings
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tiffin',
+        'USER': 'skpatel',
+        'PASSWORD': '364710',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         "NAME": BASE_DIR / "db.sqlite3",  # BASE_DIR should be defined in your settings
+#     }
+# }
 
 
 # Password validation

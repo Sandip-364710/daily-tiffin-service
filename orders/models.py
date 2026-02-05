@@ -97,6 +97,46 @@ class OrderItem(models.Model):
         return self.quantity * self.price
 
 
+class OrderReview(models.Model):
+    """Model for customers to rate and review their order experience"""
+    order = models.OneToOneField(
+        Order, on_delete=models.CASCADE, related_name='review'
+    )
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    provider = models.ForeignKey(ProviderProfile, on_delete=models.CASCADE)
+    
+    # Rating fields (1-5 stars)
+    food_quality_rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    delivery_rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    overall_rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    
+    # Review text
+    comment = models.TextField(blank=True)
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        unique_together = ('order', 'customer')
+    
+    def __str__(self):
+        return f"Review for Order #{self.order.order_number} - {self.overall_rating} stars"
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Update provider's average rating
+        self.update_provider_rating()
+    
+    def update_provider_rating(self):
+        """Update provider's average rating based on all reviews"""
+        reviews = OrderReview.objects.filter(provider=self.provider)
+        if reviews.exists():
+            avg_rating = reviews.aggregate(models.Avg('overall_rating'))['overall_rating__avg']
+            self.provider.rating = round(avg_rating, 2)
+            self.provider.save(update_fields=['rating'])
+
+
 class SavedCart(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='saved_cart'

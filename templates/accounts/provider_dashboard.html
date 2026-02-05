@@ -240,6 +240,23 @@
     color: #ff6b35;
 }
 
+/* Menu Item Badges */
+.menu-item .badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.menu-item .bg-success {
+    background-color: #20C997 !important;
+}
+
+.menu-item .bg-warning {
+    background-color: #FFC107 !important;
+    color: #000;
+}
+
 .btn-view-menu {
     background: linear-gradient(135deg, #6c5ce7, #a29bfe);
     border: none;
@@ -254,6 +271,37 @@
 .btn-view-menu:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
+}
+
+/* Action Buttons Styles */
+.action-buttons {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.action-btn {
+    min-width: 180px;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+}
+
+.action-btn i {
+    font-size: 1.1rem;
 }
 
 .review-item {
@@ -296,6 +344,58 @@
     margin-top: 0.5rem;
 }
 
+/* Profile Section Styles */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f8f9fa;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.profile-avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b35, #ee5a24);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.profile-info h4 {
+    color: #2d3436;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.profile-info p {
+    color: #636e72;
+    margin-bottom: 0.75rem;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.profile-stats span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 @media (max-width: 768px) {
     .vendor-nav .nav-link {
         padding: 0.5rem 1rem;
@@ -313,6 +413,34 @@
     .total-earnings {
         font-size: 2rem;
     }
+    
+    .action-btn {
+        min-width: 140px;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .action-buttons {
+        padding: 1.5rem;
+    }
+    
+    /* Profile responsive */
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-stats {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .profile-avatar, .profile-avatar-placeholder {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
 }
 </style>
 {% endblock %}
@@ -320,7 +448,7 @@
 {% block content %}
 <div class="vendor-dashboard">
     <!-- Vendor Navigation -->
-    <nav class="vendor-nav">
+    <!-- <nav class="vendor-nav">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
@@ -350,9 +478,77 @@
                 </a>
             </div>
         </div>
-    </nav>
+    </nav> -->
 
     <div class="container py-5">
+        <!-- Provider Profile Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="dashboard-section">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="profile-header">
+                            {% if provider_profile %}
+                                {% if provider_profile.user.profile_picture %}
+                                    <img src="{{ provider_profile.user.profile_picture.url }}" alt="{{ provider_profile.business_name }}" 
+                                         class="profile-avatar">
+                                {% else %}
+                                    <div class="profile-avatar-placeholder">
+                                        <i class="fas fa-store"></i>
+                                    </div>
+                                {% endif %}
+                                <div class="profile-info">
+                                    <h4>{{ provider_profile.business_name }}</h4>
+                                    <p>{{ provider_profile.description|truncatewords:20 }}</p>
+                                    <div class="profile-stats">
+                                        <span><i class="fas fa-phone text-primary"></i> {{ provider_profile.phone_number }}</span>
+                                        <span><i class="fas fa-clock text-info"></i> {{ provider_profile.preparation_time }} mins</span>
+                                        <span><i class="fas fa-star text-warning"></i> {{ provider_profile.rating|default:"0.0" }}/5</span>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-warning w-100">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>No Business Profile Yet!</strong> 
+                                    <a href="{% url 'provider_profile_create' %}" class="alert-link">Create your business profile</a> 
+                                    to start selling your tiffins.
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if provider_profile %}
+                            <a href="{% url 'provider_profile_create' %}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-edit me-1"></i> Edit Profile
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons Row -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="action-buttons">
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="{% url 'provider_profile_create' %}" class="btn btn-primary action-btn">
+                            <i class="fas fa-store"></i>
+                            <i class="fas fa-user-edit"></i>
+                            {% if provider_profile %}Edit Profile{% else %}Business Profile{% endif %}
+                        </a>
+                        <a href="{% url 'add_tiffin' %}" class="btn btn-success action-btn">
+                            <i class="fas fa-plus"></i>
+                            <i class="fas fa-utensils"></i>
+                            Add Menu Item
+                        </a>
+                        <a href="{% url 'tiffin_list' %}" class="btn btn-info action-btn">
+                            <i class="fas fa-list"></i>
+                            <i class="fas fa-utensils"></i>
+                            Manage Menu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <!-- Current Orders Section -->
             <div class="col-lg-6">
@@ -453,11 +649,30 @@
                         <i class="fas fa-utensils"></i> Menu Items
                     </h5>
                     
+                    {% if provider_profile %}
+                        <div class="alert alert-info mb-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Approval Required:</strong> Your menu items need admin approval before they appear to customers. 
+                            Unapproved items are only visible to you.
+                        </div>
+                    {% endif %}
+                    
                     {% if provider_tiffins %}
                         {% for tiffin in provider_tiffins %}
                         <div class="menu-item">
-                            <div class="menu-name">{{ tiffin.name }}</div>
-                            <div class="menu-price">₹{{ tiffin.price }}</div>
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="menu-name">{{ tiffin.name }}</div>
+                                    <div class="menu-price">₹{{ tiffin.price }}</div>
+                                </div>
+                                <div>
+                                    {% if tiffin.is_approved %}
+                                        <span class="badge bg-success">Approved</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">Pending</span>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
                         {% endfor %}
                     {% else %}
