@@ -1,148 +1,664 @@
 {% extends 'base.html' %}
 
-{% block title %}Provider Dashboard - Tiffin Service{% endblock %}
+{% block title %}Vendor Dashboard - Tiffin Service{% endblock %}
+
+{% block extra_css %}
+<style>
+.vendor-dashboard {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+}
+
+.vendor-nav {
+    background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+    padding: 1rem 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.vendor-nav .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin: 0 0.25rem;
+}
+
+.vendor-nav .nav-link:hover,
+.vendor-nav .nav-link.active {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+.vendor-nav .btn-sign-out {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border: none;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.vendor-nav .btn-sign-out:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(238, 90, 36, 0.3);
+}
+
+.dashboard-section {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+.dashboard-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3436;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: #ff6b35;
+}
+
+.order-item {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #ff6b35;
+    transition: all 0.3s ease;
+}
+
+.order-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(255,107,53,0.1);
+}
+
+.order-customer {
+    font-weight: 600;
+    color: #2d3436;
+    margin-bottom: 0.5rem;
+}
+
+.order-id {
+    color: #636e72;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.order-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-badge {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.order-amount {
+    font-weight: 700;
+    color: #ff6b35;
+    font-size: 1.1rem;
+}
+
+.btn-view-orders {
+    background: linear-gradient(135deg, #ff6b35, #ee5a24);
+    border: none;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.btn-view-orders:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(238, 90, 36, 0.3);
+}
+
+.earnings-chart {
+    height: 300px;
+    background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,107,53,0.05));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.chart-placeholder {
+    text-align: center;
+    color: #636e72;
+}
+
+.total-earnings {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #00b894;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.earnings-label {
+    text-align: center;
+    color: #636e72;
+    font-size: 1.1rem;
+}
+
+.earning-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.earning-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.earning-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff6b35, #ee5a24);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.earning-details {
+    flex: 1;
+}
+
+.earning-title {
+    font-weight: 600;
+    color: #2d3436;
+    margin-bottom: 0.25rem;
+}
+
+.earning-description {
+    color: #636e72;
+    font-size: 0.9rem;
+}
+
+.earning-amount {
+    font-weight: 700;
+    color: #00b894;
+    font-size: 1.1rem;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.menu-name {
+    font-weight: 600;
+    color: #2d3436;
+}
+
+.menu-price {
+    font-weight: 700;
+    color: #ff6b35;
+}
+
+.btn-view-menu {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    border: none;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.btn-view-menu:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
+}
+
+.review-item {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.review-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.review-customer {
+    font-weight: 600;
+    color: #2d3436;
+}
+
+.review-rating {
+    color: #ffd700;
+}
+
+.review-text {
+    color: #636e72;
+    line-height: 1.6;
+}
+
+.review-date {
+    color: #b2bec3;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .vendor-nav .nav-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .dashboard-section {
+        padding: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+    
+    .total-earnings {
+        font-size: 2rem;
+    }
+}
+</style>
+{% endblock %}
 
 {% block content %}
+<div class="vendor-dashboard">
+    <!-- Vendor Navigation -->
+    <nav class="vendor-nav">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <h4 class="text-white mb-0 me-4">
+                        <i class="fas fa-store me-2"></i>Vendor Dashboard
+                    </h4>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">
+                                <i class="fas fa-home me-1"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'dashboard' %}">
+                                <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'tiffin_list' %}">
+                                <i class="fas fa-utensils me-1"></i> Menu
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <a href="{% url 'logout' %}" class="btn btn-sign-out">
+                    <i class="fas fa-sign-out-alt me-1"></i> Sign Out
+                </a>
+            </div>
+        </div>
+    </nav>
 
-<div class="container py-5">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="mb-4"><i class="fas fa-store text-primary"></i> Provider Dashboard</h1>
-        </div>
-    </div>
-
-    {% if pending_tiffins_count and pending_tiffins_count > 0 %}
-    <div class="row">
-        <div class="col-12">
-            <div class="alert alert-info d-flex align-items-center" role="alert">
-                <i class="fas fa-info-circle me-2"></i>
-                <div>
-                    {{ pending_tiffins_count }} tiffin{{ pending_tiffins_count|pluralize }} pending admin approval. Once approved, they will appear in your dashboard and be visible to customers.
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    
-    {% if not provider_profile %}
-    <div class="row">
-        <div class="col-12">
-            <div class="alert alert-warning">
-                <h5><i class="fas fa-exclamation-triangle"></i> Setup Required</h5>
-                <p>You need to create your business profile before you can start offering tiffin services.</p>
-                <a href="{% url 'provider_profile_create' %}" class="btn btn-primary">Create Business Profile</a>
-            </div>
-        </div>
-    </div>
-    {% else %}
-    
-    <div class="row">
-        <!-- Business Stats -->
-        <div class="col-md-3 mb-4">
-            <div class="card bg-primary text-white">
-                <div class="card-body text-center">
-                    <i class="fas fa-utensils fa-2x mb-2"></i>
-                    <h4>My Tiffins</h4>
-                    <a href="{% url 'provider_tiffins' %}" class="btn btn-light btn-sm">Manage Tiffins</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-3 mb-4">
-            <div class="card bg-success text-white">
-                <div class="card-body text-center">
-                    <i class="fas fa-plus fa-2x mb-2"></i>
-                    <h4>Add New</h4>
-                    <a href="{% url 'add_tiffin' %}" class="btn btn-light btn-sm">Add Tiffin</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-3 mb-4">
-            <div class="card bg-warning text-white">
-                <div class="card-body text-center">
-                    <i class="fas fa-shopping-bag fa-2x mb-2"></i>
-                    <h4>Orders</h4>
-                    <a href="{% url 'order_history' %}" class="btn btn-light btn-sm">View Orders</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-3 mb-4">
-            <div class="card bg-info text-white">
-                <div class="card-body text-center">
-                    <i class="fas fa-star fa-2x mb-2"></i>
-                    <h4>{% if avg_rating %}{{ avg_rating|floatformat:1 }}{% else %}0.0{% endif %}</h4>
-                        <a href="{% url 'provider_reviews' %}" class="btn btn-light btn-sm">
-                            <i class="fas fa-eye"></i> View Ratings
-                        </a>
-                   
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Business Profile -->
-    <div class="row mt-4">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5><i class="fas fa-building"></i> Business Profile</h5>
-                </div>
-                <div class="card-body">
-                    <h6>{{ provider_profile.business_name }}</h6>
-                    <p class="text-muted">{{ provider_profile.description }}</p>
+    <div class="container py-5">
+        <div class="row">
+            <!-- Current Orders Section -->
+            <div class="col-lg-6">
+                <div class="dashboard-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-shopping-cart"></i> Current Orders
+                    </h5>
                     
-                    <div class="row">
-                        <div class="col-md-6">
-                            <strong>Delivery Areas:</strong>
-                            <p>{{ provider_profile.delivery_areas }}</p>
+                    {% if recent_orders %}
+                        {% for order in recent_orders %}
+                        <div class="order-item">
+                            <div class="order-customer">{{ order.customer.username }}</div>
+                            <div class="order-id">Order ID: #{{ order.id }}</div>
+                            <div class="order-status">
+                                <div class="d-flex align-items-center gap-2">
+                                    <select class="form-select form-select-sm status-dropdown" 
+                                            data-order-id="{{ order.id }}" 
+                                            style="width: auto; min-width: 120px;">
+                                        <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+                                        <option value="confirmed" {% if order.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                                        <option value="preparing" {% if order.status == 'preparing' %}selected{% endif %}>Preparing</option>
+                                        <option value="ready" {% if order.status == 'ready' %}selected{% endif %}>Ready</option>
+                                        <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>Delivered</option>
+                                        <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                                    </select>
+                                    <span class="order-amount">₹{{ order.total_amount }}</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <strong>Preparation Time:</strong>
-                            <p>{{ provider_profile.preparation_time }} minutes</p>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                            <p>No current orders</p>
+                        </div>
+                    {% endif %}
+                    
+                    <button class="btn btn-view-orders w-100">
+                        <i class="fas fa-eye me-1"></i> View All Orders
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Earnings Section -->
+            <div class="col-lg-6">
+                <div class="dashboard-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-chart-line"></i> Recent Earnings
+                    </h5>
+                    
+                    <div class="earnings-chart">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-area fa-3x mb-3" style="color: #ff6b35;"></i>
+                            <p>Earnings Chart</p>
                         </div>
                     </div>
                     
-                    <div class="row">
-                        <div class="col-md-6">
-                            <strong>Min Order Amount:</strong>
-                            <p>₹{{ provider_profile.min_order_amount }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <strong>Delivery Charge:</strong>
-                            <p>₹{{ provider_profile.delivery_charge }}</p>
-                        </div>
-                    </div>
+                    <div class="total-earnings">₹{{ total_earnings|default:0 }}</div>
+                    <div class="earnings-label">Total Earnings</div>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5><i class="fas fa-chart-bar"></i> Quick Stats</h5>
+
+        <div class="row">
+            <!-- Recent Earnings List -->
+            <div class="col-lg-4">
+                <div class="dashboard-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-money-bill-wave"></i> Recent Earnings
+                    </h5>
+                    
+                    {% if top_tiffins %}
+                        {% for tiffin in top_tiffins %}
+                        <div class="earning-item">
+                            <div class="earning-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="earning-details">
+                                <div class="earning-title">{{ tiffin.name }}</div>
+                                <div class="earning-description">{{ tiffin.order_count }} orders today</div>
+                            </div>
+                            <div class="earning-amount">₹{{ tiffin.total_revenue }}</div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
+                            <p>No earnings data available</p>
+                        </div>
+                    {% endif %}
                 </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Total Orders:</span>
-                        <strong>{{ total_orders }}</strong>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Rating:</span>
-                        <strong>{% if avg_rating %}{{ avg_rating|floatformat:1 }}{% else %}0.0{% endif %}/5</strong>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Status:</span>
-                        <span class="badge {% if provider_profile.is_active %}bg-success{% else %}bg-danger{% endif %}">
-                            {% if provider_profile.is_active %}Active{% else %}Inactive{% endif %}
-                        </span>
-                    </div>
+            </div>
+
+            <!-- Menu Items Section -->
+            <div class="col-lg-4">
+                <div class="dashboard-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-utensils"></i> Menu Items
+                    </h5>
+                    
+                    {% if provider_tiffins %}
+                        {% for tiffin in provider_tiffins %}
+                        <div class="menu-item">
+                            <div class="menu-name">{{ tiffin.name }}</div>
+                            <div class="menu-price">₹{{ tiffin.price }}</div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-utensils fa-2x mb-2"></i>
+                            <p>No menu items available</p>
+                        </div>
+                    {% endif %}
+                    
+                    <button class="btn btn-view-menu w-100">
+                        <i class="fas fa-eye me-1"></i> View All Menu
+                    </button>
+                </div>
+            </div>
+
+            <!-- Customer Reviews Section -->
+            <div class="col-lg-4">
+                <div class="dashboard-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-star"></i> Customer Reviews
+                    </h5>
+                    
+                    {% if recent_reviews %}
+                        {% for review in recent_reviews %}
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="review-customer">{{ review.customer.username }}</div>
+                                <div class="review-rating">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="review-text">
+                                {{ review.comment }}
+                            </div>
+                            <div class="review-date">{{ review.created_at|timesince }} ago</div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-star fa-2x mb-2"></i>
+                            <p>No reviews yet</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    
-    {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle order status changes
+    const statusDropdowns = document.querySelectorAll('.status-dropdown');
+    
+    statusDropdowns.forEach(dropdown => {
+        dropdown.addEventListener('change', function() {
+            const orderId = this.dataset.orderId;
+            const newStatus = this.value;
+            
+            console.log('Updating order:', orderId, 'to status:', newStatus); // Debug log
+            
+            // Show loading state
+            const originalValue = this.value;
+            this.disabled = true;
+            
+            // Send AJAX request to update order status
+            fetch(`/accounts/update-order-status/${orderId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    'status': newStatus
+                })
+            })
+            .then(response => {
+                console.log('Response status:', response.status); // Debug log
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    showNotification('Order status updated successfully!', 'success');
+                    
+                    // If order is delivered or cancelled, remove it from the list after a delay
+                    if (newStatus === 'delivered' || newStatus === 'cancelled') {
+                        setTimeout(() => {
+                            const orderItem = this.closest('.order-item');
+                            orderItem.style.opacity = '0.5';
+                            setTimeout(() => {
+                                orderItem.remove();
+                            }, 500);
+                        }, 1000);
+                    }
+                } else {
+                    // Show error and revert status
+                    showNotification(data.error || 'Failed to update order status', 'error');
+                    this.value = originalValue;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Network error. Please check your connection and try again.', 'error');
+                this.value = originalValue;
+            })
+            .finally(() => {
+                this.disabled = false;
+            });
+        });
+    });
+    
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    // Helper function to show notifications
+    function showNotification(message, type) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
+        notification.style.cssText = `
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            animation: slideIn 0.3s ease-out;
+        `;
+        notification.innerHTML = `
+            <div class="d-flex align-items-center">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>
+                ${message}
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 3000);
+    }
+    
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .status-dropdown {
+            transition: all 0.3s ease;
+        }
+        
+        .status-dropdown:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script>
 {% endblock %}

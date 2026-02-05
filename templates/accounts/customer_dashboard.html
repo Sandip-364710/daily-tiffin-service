@@ -1,639 +1,232 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Dashboard - TiffinWala{% endblock %}
 
 {% block content %}
-<!-- ================= DASHBOARD HEADER ================= -->
-<div class="dashboard-header py-4 bg-light-gray">
+<section class="customer-dashboard-bg">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <div class="d-flex align-items-center">
-                    <div class="avatar-lg bg-primary rounded-circle d-flex align-items-center justify-content-center me-3">
-                        <i class="fas fa-user fa-2x text-white"></i>
-                    </div>
+        <div class="customer-dashboard-shell">
+            <div class="customer-dashboard-header">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
                     <div>
-                        <h1 class="fw-bold mb-1">Welcome back, <span class="text-primary">{{ user.first_name|default:user.username }}!</span></h1>
-                        <p class="text-gray mb-0">
-                            <i class="fas fa-calendar-check me-1"></i> Member since {{ user.date_joined|date:"F Y" }}
+                        <h2 class="customer-dashboard-title">Customer Dashboard</h2>
+                        <p class="customer-dashboard-subtitle">
+                            Welcome back, <strong>{{ user.first_name|default:user.username }}</strong>
                         </p>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                <div class="badge  bg-opacity-10 text-primary px-3 py-2 rounded-pill">
-                    <i class="fas fa-star me-1"></i> {{ user.user_type|title }} Account
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ================= DASHBOARD STATS ================= -->
-<div class="container py-5">
-    <div class="row g-4">
-        <!-- Quick Stats Cards -->
-        <div class="col-xl-3 col-md-6">
-            <div class="card stats-card border-0 bg-primary text-white h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <h6 class="text-white-50 mb-1">TOTAL ORDERS</h6>
-                            <h2 class="fw-bold mb-0">12</h2>
-                        </div>
-                        <div class="stats-icon">
-                            <i class="fas fa-shopping-bag fa-2x"></i>
-                        </div>
-                    </div>
-                    <a href="{% url 'order_history' %}" class="btn btn-light btn-sm w-100">
-                        View All Orders <i class="fas fa-arrow-right ms-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-xl-3 col-md-6">
-            <div class="card stats-card border-0 bg-success text-white h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <h6 class="text-white-50 mb-1">ACTIVE ORDERS</h6>
-                            <h2 class="fw-bold mb-0">3</h2>
-                        </div>
-                        <div class="stats-icon">
-                            <i class="fas fa-clock fa-2x"></i>
-                        </div>
-                    </div>
-                    <a href="{% url 'order_history' %}?status=active" class="btn btn-light btn-sm w-100">
-                        Track Orders <i class="fas fa-arrow-right ms-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-xl-3 col-md-6">
-            <div class="card stats-card border-0 bg-warning text-white h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <h6 class="text-white-50 mb-1">CART ITEMS</h6>
-                            <h2 class="fw-bold mb-0">{{ cart_items|default:"0" }}</h2>
-                        </div>
-                        <div class="stats-icon">
-                            <i class="fas fa-shopping-cart fa-2x"></i>
-                        </div>
-                    </div>
-                    <a href="{% url 'view_cart' %}" class="btn btn-light btn-sm w-100">
-                        View Cart <i class="fas fa-arrow-right ms-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-xl-3 col-md-6">
-            <div class="card stats-card border-0 bg-info text-white h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <h6 class="text-white-50 mb-1">LOYALTY POINTS</h6>
-                            <h2 class="fw-bold mb-0">850</h2>
-                        </div>
-                        <div class="stats-icon">
-                            <i class="fas fa-gem fa-2x"></i>
-                        </div>
-                    </div>
-                    <a href="#" class="btn btn-light btn-sm w-100">
-                        Redeem Now <i class="fas fa-arrow-right ms-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================= MAIN DASHBOARD CONTENT ================= -->
-    <div class="row g-4 mt-2">
-        <!-- Left Column - Quick Actions -->
-        <div class="col-lg-8">
-            <!-- Quick Order Section -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="fw-bold mb-0">
-                            <i class="fas fa-bolt text-warning me-2"></i> Quick Order
-                        </h5>
-                        <a href="{% url 'tiffin_list' %}" class="btn btn-sm btn-outline-primary">
-                            View All <i class="fas fa-arrow-right ms-1"></i>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-sm btn-outline-primary" href="{% url 'tiffin_list' %}">
+                            <i class="fas fa-utensils me-1"></i> Explore Menu
+                        </a>
+                        <a class="btn btn-sm btn-primary" href="{% url 'view_cart' %}">
+                            <i class="fas fa-shopping-cart me-1"></i> Cart ({{ cart_items|default:"0" }})
                         </a>
                     </div>
                 </div>
-                <div class="card-body p-4">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="quick-action-card">
-                                <div class="d-flex align-items-center p-3 border rounded-3">
-                                    <div class="quick-action-icon bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                                        <i class="fas fa-sun text-primary fa-lg"></i>
                                     </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="fw-bold mb-1">Lunch Tiffins</h6>
-                                        <p class="text-gray small mb-0">Fresh meals for lunch</p>
+
+            <div class="p-3 p-md-4">
+                <!-- Top row -->
+                <div class="row g-3 g-md-4">
+                    <div class="col-lg-6">
+                        <div class="cd-card h-100">
+                            <div class="cd-card-header">
+                                <p class="cd-card-title mb-0">Current Order</p>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle">Active</span>
                                     </div>
-                                    <a href="{% url 'tiffin_list' %}?meal_type=lunch" class="btn btn-sm btn-primary">
-                                        Order
-                                    </a>
+                            <div class="cd-card-body">
+                                {% if current_order %}
+                                <div class="cd-kv">
+                                    <div class="k">Order ID</div><div class="v">#{{ current_order.order_number }}</div>
+                                    <div class="k">Status</div><div class="v">{{ current_order.get_status_display }}</div>
+                                    <div class="k">Items</div><div class="v">{{ current_order.items.count }} meals</div>
+                                    <div class="k">Total</div><div class="v">₹{{ current_order.total_amount }}</div>
+                                </div>
+                                {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-shopping-bag fa-2x text-muted mb-2"></i>
+                                    <p class="text-muted">No active orders</p>
+                                </div>
+                                {% endif %}
+                                <div class="cd-divider"></div>
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'order_history' %}" class="btn btn-sm btn-outline-primary w-100">Order History</a>
+                                    <a href="{% url 'tiffin_list' %}" class="btn btn-sm btn-primary w-100">Add More</a>
+                                </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="col-md-6">
-                            <div class="quick-action-card">
-                                <div class="d-flex align-items-center p-3 border rounded-3">
-                                    <div class="quick-action-icon bg-success bg-opacity-10 rounded-circle p-3 me-3">
-                                        <i class="fas fa-moon text-success fa-lg"></i>
+                    <div class="col-lg-6">
+                        <div class="cd-card h-100">
+                            <div class="cd-card-header">
+                                <p class="cd-card-title mb-0">Next Delivery</p>
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Tomorrow</span>
                                     </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="fw-bold mb-1">Dinner Tiffins</h6>
-                                        <p class="text-gray small mb-0">Evening delights</p>
-                                    </div>
-                                    <a href="{% url 'tiffin_list' %}?meal_type=dinner" class="btn btn-sm btn-success">
-                                        Order
-                                    </a>
+                            <div class="cd-card-body">
+                                {% if next_delivery %}
+                                <div class="cd-kv mb-2">
+                                    <div class="k">Meal</div><div class="v">{{ next_delivery.delivery_date|date:"l" }}'s Meal</div>
+                                    <div class="k">Time</div><div class="v">{{ next_delivery.delivery_time|time:"g:i A" }}</div>
+                                    <div class="k">Status</div><div class="v">{{ next_delivery.get_status_display }}</div>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="quick-action-card">
-                                <div class="d-flex align-items-center p-3 border rounded-3">
-                                    <div class="quick-action-icon bg-danger bg-opacity-10 rounded-circle p-3 me-3">
-                                        <i class="fas fa-leaf text-success fa-lg"></i>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="fw-bold mb-1">Vegetarian Only</h6>
-                                        <p class="text-gray small mb-0">Pure veg options</p>
-                                    </div>
-                                    <a href="{% url 'tiffin_list' %}?is_veg=true" class="btn btn-sm btn-danger">
-                                        Browse
-                                    </a>
+                                {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-clock fa-2x text-muted mb-2"></i>
+                                    <p class="text-muted">No upcoming deliveries</p>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="quick-action-card">
-                                <div class="d-flex align-items-center p-3 border rounded-3">
-                                    <div class="quick-action-icon bg-warning bg-opacity-10 rounded-circle p-3 me-3">
-                                        <i class="fas fa-fire text-warning fa-lg"></i>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="fw-bold mb-1">Chef's Special</h6>
-                                        <p class="text-gray small mb-0">Today's highlights</p>
-                                    </div>
-                                    <a href="{% url 'tiffin_list' %}?featured=true" class="btn btn-sm btn-warning">
-                                        Explore
-                                    </a>
+                                {% endif %}
+                                <div class="cd-mini-bars" aria-label="Weekly usage chart preview">
+                                    {% for height in weekly_usage_chart %}
+                                    <span class="{% if forloop.counter0|divisibleby:2 %}alt{% endif %}" style="height: {{ height }}px"></span>
+                                    {% endfor %}
                                 </div>
-                            </div>
+                                <div class="mt-3">
+                                    <a href="{% url 'order_history' %}?status=active" class="btn btn-sm btn-outline-primary w-100">
+                                        Track Delivery
+                                    </a>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Recent Orders -->
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-0 py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="fw-bold mb-0">
-                            <i class="fas fa-history text-primary me-2"></i> Recent Orders
-                        </h5>
-                        <a href="{% url 'order_history' %}" class="btn btn-sm btn-outline-primary">
-                            View All <i class="fas fa-arrow-right ms-1"></i>
-                        </a>
+                    <!-- Second row -->
+                    <div class="col-lg-6">
+                        <div class="cd-card">
+                            <div class="cd-card-header">
+                                <p class="cd-card-title mb-0">Order History</p>
+                                <a class="btn btn-sm btn-outline-primary" href="{% url 'order_history' %}">View all</a>
                     </div>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Order ID</th>
-                                    <th>Date</th>
-                                    <th>Items</th>
-                                    <th>Total</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>#ORD-7890</strong></td>
-                                    <td>Today</td>
-                                    <td>2 items</td>
-                                    <td>₹280</td>
-                                    <td><span class="badge bg-success">Delivered</span></td>
-                                    <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>#ORD-7889</strong></td>
-                                    <td>Yesterday</td>
-                                    <td>3 items</td>
-                                    <td>₹420</td>
-                                    <td><span class="badge bg-warning">Processing</span></td>
-                                    <td><a href="#" class="btn btn-sm btn-outline-primary">Track</a></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>#ORD-7885</strong></td>
-                                    <td>2 days ago</td>
-                                    <td>1 item</td>
-                                    <td>₹150</td>
-                                    <td><span class="badge bg-success">Delivered</span></td>
-                                    <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Right Column - Profile & Quick Actions -->
-        <div class="col-lg-4">
-            <!-- Profile Card -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body p-4">
-                    <div class="text-center mb-4">
-                        <div class="avatar-xl bg-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
-                            <i class="fas fa-user fa-3x text-white"></i>
+                            <div class="cd-card-body">
+                                {% if recent_orders %}
+                                <ul class="cd-list">
+                                    {% for order in recent_orders %}
+                                    <li>
+                                        <div class="meta">
+                                            <div class="t">#{{ order.order_number }}</div>
+                                            <div class="s">{{ order.created_at|timesince }} ago · {{ order.items.count }} items</div>
+                                        </div>
+                                        <span class="badge 
+                                            {% if order.status == 'delivered' %}bg-success
+                                            {% elif order.status == 'pending' %}bg-warning text-dark
+                                            {% elif order.status == 'confirmed' %}bg-info
+                                            {% elif order.status == 'preparing' %}bg-primary
+                                            {% elif order.status == 'ready' %}bg-success
+                                            {% else %}bg-danger{% endif %}">
+                                            {{ order.get_status_display }}
+                                        </span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-history fa-2x text-muted mb-2"></i>
+                                    <p class="text-muted">No order history</p>
+                                </div>
+                                {% endif %}
                         </div>
-                        <h5 class="fw-bold mb-1">{{ user.get_full_name|default:user.username }}</h5>
-                        <p class="text-gray small mb-3">{{ user.email }}</p>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="#" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-edit me-1"></i> Edit
-                            </a>
-                            <a href="#" class="btn btn-sm btn-outline-danger">
-                                <i class="fas fa-cog me-1"></i> Settings
-                            </a>
                         </div>
                     </div>
                     
-                    <div class="profile-info">
-                        <div class="info-item d-flex justify-content-between py-2 border-bottom">
-                            <span class="text-gray">Member Since</span>
-                            <span class="fw-semibold">{{ user.date_joined|date:"d M, Y" }}</span>
+                    <div class="col-lg-6">
+                        <div class="cd-card">
+                            <div class="cd-card-header">
+                                <p class="cd-card-title mb-0">Weekly/Monthly Usage</p>
+                                <span class="badge bg-light text-dark border">Stats</span>
                         </div>
-                        <div class="info-item d-flex justify-content-between py-2 border-bottom">
-                            <span class="text-gray">Last Login</span>
-                            <span class="fw-semibold">Today</span>
+                            <div class="cd-card-body">
+                                <div class="cd-mini-bars" aria-label="Usage chart preview">
+                                    {% for height in usage_chart %}
+                                    <span class="{% if forloop.counter0|divisibleby:2 %}alt{% endif %}" style="height: {{ height }}px"></span>
+                                    {% endfor %}
+                                </div>
+                                <div class="cd-kv mt-3">
+                                    <div class="k">Total Orders</div><div class="v">{{ total_orders }}</div>
+                                    <div class="k">This Month</div><div class="v">{{ monthly_orders }}</div>
+                                    <div class="k">Total Spent</div><div class="v">₹{{ total_spent }}</div>
+                                </div>
                         </div>
-                        <div class="info-item d-flex justify-content-between py-2 border-bottom">
-                            <span class="text-gray">Orders Placed</span>
-                            <span class="fw-semibold">12</span>
-                        </div>
-                        <div class="info-item d-flex justify-content-between py-2">
-                            <span class="text-gray">Loyalty Points</span>
-                            <span class="fw-semibold text-primary">850</span>
                         </div>
                     </div>
+
+                    <!-- Third row -->
+                    <div class="col-lg-6">
+                        <div class="cd-card">
+                            <div class="cd-card-header">
+                                <p class="cd-card-title mb-0">Menu items</p>
+                                <a class="btn btn-sm btn-outline-primary" href="{% url 'tiffin_list' %}">Browse</a>
+                            </div>
+                            <div class="cd-card-body">
+                                {% if popular_tiffins %}
+                                <ul class="cd-list">
+                                    {% for tiffin in popular_tiffins %}
+                                    <li>
+                                        <div class="meta">
+                                            <div class="t">{{ tiffin.name }}</div>
+                                            <div class="s">From ₹{{ tiffin.price }} · {{ tiffin.get_meal_type_display }}</div>
+                                        </div>
+                                        <a class="btn btn-sm btn-primary" href="{% url 'tiffin_list' %}">Order</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-utensils fa-2x text-muted mb-2"></i>
+                                    <p class="text-muted">No menu items available</p>
+                                </div>
+                                {% endif %}
+                            </div>
                 </div>
             </div>
             
-            <!-- Quick Search -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <h6 class="fw-bold mb-0">
-                        <i class="fas fa-search-location text-info me-2"></i> Search by Location
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <form method="get" action="{% url 'tiffin_list' %}">
-                        <div class="mb-3">
-                            <label class="form-label small text-gray">Enter City</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                                <input type="text" class="form-control" name="city" placeholder="e.g., Mumbai, Delhi">
+                    <div class="col-lg-6">
+                        <div class="cd-card">
+                            <div class="cd-card-header">
+                                <p class="cd-card-title mb-0">Favorite Vendors</p>
+                                <span class="badge bg-light text-dark border">Saved</span>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small text-gray">Meal Type</label>
-                            <select class="form-select" name="meal_type">
-                                <option value="">Any Meal</option>
-                                <option value="breakfast">Breakfast</option>
-                                <option value="lunch">Lunch</option>
-                                <option value="dinner">Dinner</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-search me-2"></i> Search Tiffins
-                        </button>
-                    </form>
-                </div>
-            </div>
-            
-            <!-- Quick Links -->
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-0 py-3">
-                    <h6 class="fw-bold mb-0">
-                        <i class="fas fa-link text-success me-2"></i> Quick Links
-                    </h6>
-                </div>
-                <div class="card-body p-3">
-                    <div class="list-group list-group-flush">
-                        <a href="{% url 'view_cart' %}" class="list-group-item list-group-item-action border-0 py-3">
-                            <div class="d-flex align-items-center">
-                                <div class="quick-link-icon bg-primary bg-opacity-10 rounded-circle p-2 me-3">
-                                    <i class="fas fa-shopping-cart text-primary"></i>
+                            <div class="cd-card-body">
+                                {% if favorite_vendors %}
+                                <ul class="cd-list">
+                                    {% for vendor in favorite_vendors %}
+                                    <li>
+                                        <div class="meta">
+                                            <div class="t">{{ vendor.business_name }}</div>
+                                            <div class="s">{{ vendor.description|truncatewords:8 }}</div>
+                                        </div>
+                                        <span class="cd-stars" aria-label="{{ vendor.avg_rating|default:0 }} out of 5 stars">
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= vendor.avg_rating|default:0 %}
+                                                    ★
+                                                {% else %}
+                                                    ☆
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-heart fa-2x text-muted mb-2"></i>
+                                    <p class="text-muted">No favorite vendors yet</p>
                                 </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">My Cart</h6>
-                                    <p class="text-gray small mb-0">{{ cart_items|default:"0" }} items</p>
-                                </div>
-                                <i class="fas fa-chevron-right text-gray"></i>
+                                {% endif %}
                             </div>
-                        </a>
-                        
-                        <a href="{% url 'order_history' %}" class="list-group-item list-group-item-action border-0 py-3">
-                            <div class="d-flex align-items-center">
-                                <div class="quick-link-icon bg-success bg-opacity-10 rounded-circle p-2 me-3">
-                                    <i class="fas fa-history text-success"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Order History</h6>
-                                    <p class="text-gray small mb-0">View all orders</p>
-                                </div>
-                                <i class="fas fa-chevron-right text-gray"></i>
-                            </div>
-                        </a>
-                        
-                        <a href="#" class="list-group-item list-group-item-action border-0 py-3">
-                            <div class="d-flex align-items-center">
-                                <div class="quick-link-icon bg-warning bg-opacity-10 rounded-circle p-2 me-3">
-                                    <i class="fas fa-heart text-warning"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Favorites</h6>
-                                    <p class="text-gray small mb-0">Saved items</p>
-                                </div>
-                                <i class="fas fa-chevron-right text-gray"></i>
-                            </div>
-                        </a>
-                        
-                        <a href="#" class="list-group-item list-group-item-action border-0 py-3">
-                            <div class="d-flex align-items-center">
-                                <div class="quick-link-icon bg-info bg-opacity-10 rounded-circle p-2 me-3">
-                                    <i class="fas fa-question-circle text-info"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Help & Support</h6>
-                                    <p class="text-gray small mb-0">Get assistance</p>
-                                </div>
-                                <i class="fas fa-chevron-right text-gray"></i>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- ================= SPECIAL OFFERS ================= -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm overflow-hidden">
-                <div class="card-body p-4">
-                    <div class="row align-items-center">
-                        <div class="col-md-8">
-                            <h5 class="fw-bold mb-2">
-                                <i class="fas fa-gift text-danger me-2"></i> Special Offer for You!
-                            </h5>
-                            <p class="text-gray mb-0">
-                                Get <strong class="text-primary">20% OFF</strong> on your next order. Use code: 
-                                <code class="bg-primary text-white px-2 py-1 rounded">WELCOME20</code>
-                            </p>
-                        </div>
-                        <div class="col-md-4 text-md-end">
-                            <a href="{% url 'tiffin_list' %}" class="btn btn-danger px-4">
-                                <i class="fas fa-shopping-bag me-2"></i> Shop Now
-                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
 
 {% block extra_css %}
-<style>
-    /* Dashboard Specific Styles */
-    .dashboard-header {
-        background: linear-gradient(135deg, 
-            rgba(255, 255, 255, 0.95) 0%,
-            rgba(255, 248, 240, 0.9) 100%);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
-    
-    .avatar-lg {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .avatar-xl {
-        width: 100px;
-        height: 100px;
-    }
-    
-    /* Stats Cards */
-    .stats-card {
-        border-radius: var(--radius-lg);
-        overflow: hidden;
-        transition: var(--transition);
-        position: relative;
-    }
-    
-    .stats-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.3);
-    }
-    
-    .stats-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-lg) !important;
-    }
-    
-    .stats-icon {
-        opacity: 0.8;
-    }
-    
-    /* Quick Action Cards */
-    .quick-action-card {
-        transition: var(--transition);
-    }
-    
-    .quick-action-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-sm);
-    }
-    
-    .quick-action-icon {
-        transition: var(--transition);
-    }
-    
-    .quick-action-card:hover .quick-action-icon {
-        transform: scale(1.1);
-        background: linear-gradient(135deg, var(--primary), var(--primary-light)) !important;
-    }
-    
-    .quick-action-card:hover .quick-action-icon i {
-        color: white !important;
-    }
-    
-    /* Profile Info */
-    .profile-info .info-item:last-child {
-        border-bottom: none !important;
-    }
-    
-    /* Table Styles */
-    .table th {
-        font-weight: 600;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: var(--gray);
-        border-bottom-width: 1px;
-    }
-    
-    .table td {
-        vertical-align: middle;
-        padding: 1rem;
-    }
-    
-    .table-hover tbody tr:hover {
-        background-color: rgba(255, 107, 53, 0.05);
-    }
-    
-    /* Quick Links */
-    .quick-link-icon {
-        transition: var(--transition);
-    }
-    
-    .list-group-item-action:hover .quick-link-icon {
-        background: linear-gradient(135deg, var(--primary), var(--primary-light)) !important;
-    }
-    
-    .list-group-item-action:hover .quick-link-icon i {
-        color: white !important;
-    }
-    
-    .list-group-item-action:hover {
-        background-color: rgba(255, 107, 53, 0.05);
-    }
-    
-    /* Special Offer */
-    .card.overflow-hidden {
-        background: linear-gradient(135deg, 
-            rgba(255, 248, 240, 0.9) 0%,
-            rgba(255, 241, 224, 0.8) 100%);
-        border: 1px solid rgba(255, 107, 53, 0.1);
-    }
-    
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        .dashboard-header {
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
-        }
-        
-        .avatar-lg {
-            width: 60px;
-            height: 60px;
-        }
-        
-        .stats-card .card-body {
-            padding: 1.5rem;
-        }
-        
-        .table-responsive {
-            margin: -1rem;
-            padding: 1rem;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .quick-action-card .d-flex {
-            flex-direction: column;
-            text-align: center;
-        }
-        
-        .quick-action-icon {
-            margin-bottom: 1rem;
-            margin-right: 0 !important;
-        }
-        
-        .profile-info {
-            font-size: 0.875rem;
-        }
-    }
-    
-    /* Animation */
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-    }
-    
-    .stats-card:hover .stats-icon {
-        animation: pulse 1s infinite;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/customer_dashboard.css' %}">
 {% endblock %}
 
 {% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize tooltips
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-    
-    // Add click animation to all buttons
-    document.querySelectorAll('.btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            this.classList.add('animate__animated', 'animate__pulse');
-            setTimeout(() => {
-                this.classList.remove('animate__animated', 'animate__pulse');
-            }, 300);
-        });
-    });
-    
-    // Update cart count if available
-    function updateCartCount() {
-        const cartBadge = document.querySelector('.quick-link-icon .fa-shopping-cart')?.closest('.list-group-item-action');
-        if (cartBadge) {
-            // You can update cart count dynamically here
-            // Example: fetch('/api/cart-count/').then(...)
-        }
-    }
-    
-    // Check for new notifications
-    function checkNotifications() {
-        // Implement notification checking logic
-        console.log('Checking for new notifications...');
-    }
-    
-    // Initial checks
-    updateCartCount();
-    checkNotifications();
-    
-    // Auto-refresh stats every 30 seconds (optional)
-    // setInterval(checkNotifications, 30000);
-});
-</script>
+<!-- No extra scripts needed for this layout -->
 {% endblock %}

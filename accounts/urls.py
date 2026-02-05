@@ -8,4 +8,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('provider/profile/create/', views.provider_profile_create, name='provider_profile_create'),
+    path('update-order-status/<int:order_id>/', views.update_order_status, name='update_order_status'),
 ]

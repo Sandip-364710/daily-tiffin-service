@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Home - મમ્મીનું રસોડું{% endblock %}
 
@@ -402,162 +403,7 @@
 {% endblock %}
 
 {% block extra_css %}
-<style>
-    :root {
-        --tiffin-green: #2ecc71;
-        --tiffin-dark: #1a1a1a;
-    }
-
-    /* Custom Colors */
-    .text-tiffin { color: var(--tiffin-green) !important; }
-    .btn-tiffin {
-        background-color: var(--tiffin-green);
-        color: white;
-        border: none;
-        transition: all 0.3s ease;
-    }
-    .btn-tiffin:hover {
-        background-color: #27ae60;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-    }
-    .btn-outline-tiffin {
-        color: var(--tiffin-green);
-        border: 2px solid var(--tiffin-green);
-    }
-    .btn-outline-tiffin:hover {
-        background-color: var(--tiffin-green);
-        color: white;
-    }
-    .badge-pill {
-        background-color: rgba(46, 204, 113, 0.1) !important;
-        color: var(--tiffin-green) !important;
-    }
-
-    /* Hero Section */
-    .hero-section { background: white; }
-    .hero-image-card {
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-    }
-    .hero-image-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Avatar Circles */
-    .avatar-circle {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, var(--tiffin-green), #27ae60);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 0.8rem;
-        border: 3px solid white;
-    }
-
-    /* Feature Box */
-    .feature-box {
-        border-radius: 15px;
-        transition: all 0.3s ease;
-    }
-    .feature-box:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Meal Cards */
-    .meal-card {
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-    }
-    .meal-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-    }
-    .meal-image-wrapper {
-        height: 200px;
-        overflow: hidden;
-        background: #f5f5f5;
-    }
-    .meal-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-    .meal-card:hover .meal-image {
-        transform: scale(1.1);
-    }
-    .badge-group {
-        position: absolute;
-        top: 12px;
-        left: 12px;
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-
-    /* Rating Stars */
-    .rating-stars i {
-        color: #ffc107;
-        margin-right: 3px;
-    }
-
-    /* Step Number */
-    .step-number {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, var(--tiffin-green), #27ae60);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        font-weight: bold;
-        margin: 0 auto 20px;
-    }
-    
-    /* CTA Section */
-    .cta-section {
-        background: linear-gradient(135deg, var(--tiffin-green), #27ae60);
-        color: white;
-        border-radius: 20px;
-    }
-
-    /* Newsletter Card */
-    .newsletter-card {
-        background: #f9f9f9;
-        border: 1px solid #f0f0f0;
-    }
-
-    /* Section Header */
-    .section-header {
-        margin-bottom: 50px;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .display-3 { font-size: 2rem; }
-        .lead { font-size: 1rem; }
-        .cta-section { text-align: center; }
-        .cta-section .col-lg-4 { text-align: center !important; margin-top: 20px; }
-    }
-
-    @media (max-width: 576px) {
-        .display-3 { font-size: 1.5rem; }
-        .meal-image-wrapper { height: 150px; }
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block scripts %}
@@ -624,8 +470,32 @@ function addToCart(tiffinId, buttonElement) {
                 stopOnFocus: true
             }).showToast();
             
-            // Update cart count if exists
-            updateCartCount();
+            // Update cart count badge on navbar icon - direct update
+            var newCount = (data.cart_count !== undefined && data.cart_count !== null)
+                ? Number(data.cart_count)
+                : 1;
+            
+            console.log('Updating cart count to:', newCount, 'from response:', data);
+            
+            // Try using global function first
+            if (window.updateCartCount) {
+                window.updateCartCount(newCount);
+            }
+            
+            // Also directly update as fallback - force visibility
+            var badge = document.getElementById('cartCount');
+            var numEl = document.getElementById('cartCountNumber');
+            if (badge && numEl) {
+                numEl.textContent = newCount;
+                badge.classList.remove('d-none');
+                badge.style.setProperty('display', 'inline-block', 'important');
+                badge.style.setProperty('visibility', 'visible', 'important');
+                badge.style.setProperty('opacity', '1', 'important');
+                badge.style.setProperty('z-index', '9999', 'important');
+                console.log('Cart badge directly updated to:', newCount);
+            } else {
+                console.warn('Cart badge elements not found!', {badge: !!badge, numEl: !!numEl});
+            }
             
             setTimeout(() => {
                 buttonElement.innerHTML = originalText;

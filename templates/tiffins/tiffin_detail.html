@@ -208,9 +208,8 @@ function addToCart(tiffinId) {
               position: 'right',
               style: { background: 'linear-gradient(to left, black, chocolate)', color: '#fff' }
             }).showToast();
-            const badge = document.getElementById('cartCount');
-            if (badge && typeof data.cart_count !== 'undefined') {
-                badge.textContent = data.cart_count;
+            if (typeof updateCartCount === 'function' && typeof data.cart_count !== 'undefined') {
+                updateCartCount(data.cart_count);
             }
         } else {
             Toastify({

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="kesri">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +20,9 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Project CSS -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
     <style>
         /* ===== CSS VARIABLES ===== */
@@ -977,12 +981,10 @@
                     <a class="nav-link position-relative {% if '/orders/cart/' in request.path %}active{% endif %}" href="{% url 'view_cart' %}" 
                        title="View Cart">
                         <i class="fas fa-shopping-cart fa-lg"></i>
-                        {% if request.session.cart %}
-                        <span class="badge bg-primary position-absolute top-0 start-100 translate-middle badge-pill">
-                            {{ request.session.cart|length }}
+                        <span id="cartCount" class="badge bg-primary position-absolute top-0 start-100 translate-middle badge-pill {% if not request.session.cart %}d-none{% endif %}">
+                            <span id="cartCountNumber">{% if request.session.cart %}{{ request.session.cart|length }}{% else %}0{% endif %}</span>
                             <span class="visually-hidden">items in cart</span>
                         </span>
-                        {% endif %}
                     </a>
                 </li>
 
@@ -1242,6 +1244,32 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+/* ===== CART COUNT (update from any page when add-to-cart succeeds) ===== */
+window.updateCartCount = function(count) {
+    var badge = document.getElementById('cartCount');
+    var numEl = document.getElementById('cartCountNumber');
+    if (!badge) {
+        console.warn('Cart badge not found!');
+        return;
+    }
+    var n = Number(count) || 0;
+    if (numEl) {
+        numEl.textContent = n;
+    }
+    if (n > 0) {
+        // Force badge to be visible - remove d-none and set inline style with !important
+        badge.classList.remove('d-none');
+        badge.style.setProperty('display', 'inline-block', 'important');
+        badge.style.setProperty('visibility', 'visible', 'important');
+        badge.style.setProperty('opacity', '1', 'important');
+        badge.style.setProperty('z-index', '9999', 'important');
+        console.log('Cart count updated to:', n);
+    } else {
+        badge.classList.add('d-none');
+        badge.style.setProperty('display', 'none', 'important');
+    }
+};
 </script>
 
 {% block scripts %}{% endblock %}

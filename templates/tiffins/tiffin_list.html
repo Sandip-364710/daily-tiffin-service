@@ -195,10 +195,8 @@ function addToCart(tiffinId) {
                 style: { background: '#2ecc71', color: '#fff' },
                 duration: 3000
             }).showToast();
-            
-            const badge = document.getElementById('cartCount');
-            if (badge) {
-                badge.textContent = data.cart_count || data.count || 1;
+            if (typeof updateCartCount === 'function') {
+                updateCartCount(data.cart_count ?? data.count ?? 1);
             }
         } else {
             throw new Error(data.error || 'Error adding item to cart');
