@@ -23,6 +23,8 @@
 
     <!-- Project CSS -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <style>
         /* ===== CSS VARIABLES ===== */
@@ -909,6 +911,21 @@
 
 <!-- ================= NAVBAR ================= -->
 <nav class="navbar navbar-expand-lg fixed-top border-0">
+    {% if messages %}
+               <script>
+                   {% for message in messages %}
+                   Toastify({
+                     text: "{{ message }}" ,
+                     className: "info",
+                     position: "right",
+                     gravity: "top",
+                     style: {
+                       background: "linear-gradient(to left, black, chocolate)",
+                     }
+                   }).showToast();
+                   {% endfor %}
+               </script>
+             {% endif %}
     <div class="container">
       <a class="navbar-brand" href="{% url 'home' %}">
     <div class="brand-logo" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
