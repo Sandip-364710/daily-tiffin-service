@@ -8,7 +8,8 @@ from django.http import JsonResponse
 
 def home(request):
     featured_tiffins = TiffinService.objects.filter(is_available=True, is_approved=True)[:6]
-    messages.success(request, f'Welcome to Tiffin Service!')
+    if request.user.is_authenticated:
+        messages.success(request, 'Welcome to Tiffin Service!')
     return render(request, 'tiffins/home.html', {
         'featured_tiffins': featured_tiffins
     })

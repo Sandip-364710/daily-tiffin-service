@@ -27,7 +27,7 @@ class TiffinService(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     meal_type = models.CharField(max_length=20, choices=MEAL_TYPE_CHOICES)
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    image = models.ImageField(upload_to='tiffins/', blank=True, null=True)
+    image = models.ImageField(upload_to='tiffins/', blank=False, null=False)
     is_available = models.BooleanField(default=True)
     is_vegetarian = models.BooleanField(default=True)
     is_approved = models.BooleanField(default=False, help_text="Visible to customers only after admin approval")

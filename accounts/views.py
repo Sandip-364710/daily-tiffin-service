@@ -200,7 +200,6 @@ def dashboard(request):
                 })
             except ProviderProfile.DoesNotExist:
                 continue
-        
         return render(request, 'accounts/customer_dashboard.html', {
             'current_order': current_order,
             'next_delivery': next_delivery,
